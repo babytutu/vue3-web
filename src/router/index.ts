@@ -11,8 +11,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/views/frame/HomeView.vue'),
+      component: () => import('@/views/frame/waper.vue'),
       children: [
         {
           path: '/home',
@@ -26,12 +25,11 @@ const router = createRouter({
         ...DemoRoute,
         {
           path: '/:pathMatch(.*)*',
-          name: 'NotFound',
-          component: () => import('@/views/frame/NotFound.vue'),
+          name: '404',
+          component: () => import('@/views/frame/404.vue'),
         },
       ],
     },
-    // { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
 })
 

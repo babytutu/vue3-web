@@ -2,6 +2,7 @@
   <el-menu default-active="/home" class="side-bar">
     <template v-for="i in menuList" :key="i.title">
       <el-menu-item v-if="!i.children || !i.children.length" :index="i.title + i.path" @click="emit('addTab', i)">
+        <el-icon v-if="i.icon"><component :is="i.icon" /></el-icon>
         <span>{{ i.title }}</span>
       </el-menu-item>
       <el-sub-menu v-else :index="i.title + i.path">

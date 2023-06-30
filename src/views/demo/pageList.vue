@@ -1,13 +1,10 @@
 <template>
   <div class="flex">
     <el-form :inline="true" :model="formInline" @submit.prevent>
-      <el-form-item label="关键字">
-        <el-select v-model="formInline.key">
+      <el-form-item>
+        <el-select v-model="formInline.key" @change="onSubmit">
           <el-option v-for="item in options" :key="item" :label="item" :value="item" />
         </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="flex-content">

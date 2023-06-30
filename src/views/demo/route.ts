@@ -1,20 +1,26 @@
 export const route: any[] = [
   {
-    path: '/tablePage',
-    name: 'tablePage',
-    component: () => import('@/views/demo/tablePage.vue'),
-  },
-  {
-    path: '/formList',
-    name: 'formList',
-    component: () => import('@/views/demo/formList.vue'),
-  },
-  {
-    path: '/form/:id',
-    name: 'formPage',
-    component: () => import('@/views/demo/formDetail.vue'),
+    path: '/singleList',
+    name: 'singleList',
+    component: () => import('@/views/demo/singleList.vue'),
     meta: {
-      title: '表单详情',
+      title: 'FakeStore',
+    },
+  },
+  {
+    path: '/pageList',
+    name: 'pageList',
+    component: () => import('@/views/demo/pageList.vue'),
+    meta: {
+      title: 'Fakerapis',
+    },
+  },
+  {
+    path: '/detailInfo/:id',
+    name: 'detailInfo',
+    component: () => import('@/views/demo/detailInfo.vue'),
+    meta: {
+      title: 'Info',
     },
   },
 ]

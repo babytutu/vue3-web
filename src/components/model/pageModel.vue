@@ -18,7 +18,7 @@ import { ref } from 'vue'
 const emit = defineEmits(['size-change', 'current-change'])
 
 /**
- * Pagination 分页定制
+ * Pagination
  * @see https://element-plus.org/zh-CN/component/pagination.html#api
  */
 export interface Props {

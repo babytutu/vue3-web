@@ -27,8 +27,8 @@ import type { tabType } from '@/components/frame/tabMenu.vue'
 const addTab = ref()
 
 /**
- * 菜单新增页签
- * @param tabInfo 页签对象
+ * open new tab
+ * @param tabInfo
  */
 function addTabByMenu(tabInfo: tabType) {
   addTab.value?.addTab(tabInfo)

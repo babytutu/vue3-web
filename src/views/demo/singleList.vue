@@ -2,15 +2,18 @@
   <div class="flex">
     <el-form :inline="true" @submit.prevent>
       <el-form-item>
-        <el-button type="primary" @click="getList">查询</el-button>
+        <el-radio-group v-model="activeName" @change="getList">
+          <el-radio-button v-for="i in cat" :key="i" :label="i" />
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <div class="flex-content">
       <el-table v-loading="loading" :data="tableData" height="100%">
-        <el-table-column v-for="i in tableHeader" :key="i" :prop="i" :label="i" />
-        <el-table-column label="操作" width="80">
+        <el-table-column label="Title" prop="title" />
+        <el-table-column label="Price" prop="price" width="120" />
+        <el-table-column label="Action" width="80">
           <template #default="scope">
-            <el-button link type="primary" @click="handleDetail(scope.row)">查看</el-button>
+            <el-button link type="primary" @click="handleDetail(scope.row)">Detail</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -28,18 +31,20 @@ const router = useRouter()
 const loading = ref(true)
 const tableData = ref<Array<any>>([])
 
-const tableHeader = ref(['name', 'age'])
+const cat: string[] = ['electronics', 'jewelery', "men's clothing", "women's clothing"]
+
+const activeName = ref(cat[0])
 
 const handleDetail = (item: any) => {
-  router.push(`/form/${item._id}`)
+  router.push(`/detailInfo/${item.id}`)
 }
 
 const getList = () => {
   loading.value = true
   tableData.value = []
-  get(`https://87tetwnrqe.hk.aircode.run/getItem`)
-    .then((res) => {
-      tableData.value = res.result || []
+  get(`https://fakestoreapi.com/products/category/${activeName.value}`)
+    .then((res: any) => {
+      tableData.value = res
       loading.value = false
     })
     .catch(() => {

@@ -21,14 +21,14 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-// 页签类型
+// Tab
 export interface tabType {
   title: string
   path: string
   closable?: boolean
 }
 
-const router = useRouter() // 全局路由对象
+const router = useRouter()
 
 export interface Props {
   homeTab?: tabType
@@ -36,16 +36,15 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   homeTab: () => ({
-    title: '首页',
+    title: 'Home',
     path: '/home',
     closable: false,
   })
 })
 
-// 页签数组初始化
 const panes = ref<Array<tabType>>([props.homeTab])
 
-const activeKey = ref(panes.value[0].path) // 当前激活的tab页的key
+const activeKey = ref(panes.value[0].path)
 
 // 添加tab页签，选中侧边栏菜单项时调用
 const addTab = (paneObj: tabType) => {
@@ -79,7 +78,7 @@ const changeTab = (activeKeyId: string) => {
   }
 }
 
-defineExpose({ addTab }) // 定义可被父组件调用的组件
+defineExpose({ addTab })
 
 // 路由变更触发页签变更
 watch(() =>

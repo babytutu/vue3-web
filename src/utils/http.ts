@@ -1,13 +1,4 @@
-interface Res {
-  data: any
-  infocode?: string
-  code?: number
-  total?: number
-  result?: any
-}
-
-export async function http(url: string, body?: any): Promise<Res> {
-  console.log(body)
+export async function http(url: string, body?: any): Promise<any> {
   return await fetch(url, {
     body: body && JSON.stringify(body),
     method: 'POST',
@@ -17,7 +8,7 @@ export async function http(url: string, body?: any): Promise<Res> {
   }).then((res) => res.json())
 }
 
-export async function get(url: string): Promise<Res> {
+export async function get(url: string): Promise<any> {
   return await fetch(url, {
     method: 'GET',
     headers: {
