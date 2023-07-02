@@ -1,5 +1,5 @@
 <template>
-  <el-descriptions v-loading="loading" title="Info" :column="1" border>
+  <el-descriptions v-loading="loading" :title="id" :column="1" border>
     <template #extra>
       <el-button @click="removeTab($route.path)">Close</el-button>
     </template>
@@ -22,8 +22,8 @@ const info: any = ref({})
 const loading = ref(true)
 
 onMounted(() => {
-  get(`https://fakestoreapi.com/products/${id}`).then((res: any) => {
-    info.value = res
+  get(`https://fakerapi.it/api/v1/addresses?_quantity=1&_characters=50`).then((res: any) => {
+    info.value = res.data[0]
     loading.value = false
   }).catch(() => {
     loading.value = false

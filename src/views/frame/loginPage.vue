@@ -1,11 +1,11 @@
 <template>
   <div class="flex">
-    <el-card class="box-card" header="Login">
+    <el-card class="box-card" header="演示后台">
       <el-form label-width="80px" :model="loginInfo">
-        <el-form-item label="Username">
+        <el-form-item label="帐号">
           <el-input v-model="loginInfo.username" maxLength="10" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item label="密码">
           <el-input v-model="loginInfo.password" maxLength="12" type="password" />
         </el-form-item>
         <el-form-item>
@@ -14,7 +14,7 @@
             :loading="loading"
             :disabled="!loginInfo.username || !loginInfo.password"
             @click="onSubmit"
-            >Login</el-button
+            >登陆</el-button
           >
         </el-form-item>
       </el-form>

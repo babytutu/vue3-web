@@ -4,7 +4,7 @@ export const route: any[] = [
     name: 'singleList',
     component: () => import('@/views/demo/singleList.vue'),
     meta: {
-      title: 'FakeStore',
+      title: '简单列表',
     },
   },
   {
@@ -12,7 +12,7 @@ export const route: any[] = [
     name: 'pageList',
     component: () => import('@/views/demo/pageList.vue'),
     meta: {
-      title: 'Fakerapis',
+      title: '分页列表',
     },
   },
   {
@@ -20,7 +20,15 @@ export const route: any[] = [
     name: 'detailInfo',
     component: () => import('@/views/demo/detailInfo.vue'),
     meta: {
-      title: 'Info',
+      title: '详情',
+    },
+  },
+  {
+    path: '/formPage',
+    name: 'formPage',
+    component: () => import('@/views/demo/formPage.vue'),
+    meta: {
+      title: '表单',
     },
   },
 ]

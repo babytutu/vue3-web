@@ -10,6 +10,11 @@
     <div class="flex-content">
       <el-table v-loading="loading" :data="tableData" height="100%">
         <el-table-column v-for="i in tableHeader" :key="i" :prop="i" :label="i" />
+        <el-table-column label="操作" width="80">
+          <template #default="scope">
+            <el-button link type="primary" @click="handleDetail(scope.row)">详情</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="flex-footer">
@@ -27,6 +32,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { get } from '@/utils/http'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const formInline = ref({
   key: 'books',
@@ -76,6 +84,10 @@ const getList = () => {
       loading.value = false
       total.value = 0
     })
+}
+
+const handleDetail = (item: any) => {
+  router.push(`/detailInfo/${item.id}`)
 }
 
 onMounted(() => {

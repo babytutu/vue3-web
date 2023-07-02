@@ -48,6 +48,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id: string) => {
+          if (id.includes('icons-vue')) {
+            return 'icon'
+          }
           if (id.includes('element')) {
             return 'element'
           }

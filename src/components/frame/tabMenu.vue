@@ -29,10 +29,10 @@
     >
       <ul>
         <li>
-          <el-link :underline="false" @click="closeOtherTabs">Close Others</el-link>
+          <el-link :underline="false" @click="closeOtherTabs">关闭其他</el-link>
         </li>
         <li>
-          <el-link :underline="false" @click="closeAllTabs">Close All</el-link>
+          <el-link :underline="false" @click="closeAllTabs">关闭所有</el-link>
         </li>
       </ul>
     </el-popover>
@@ -58,7 +58,7 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   homeTab: () => ({
-    title: 'Home',
+    title: '首页',
     path: '/home',
     closable: false,
   }),

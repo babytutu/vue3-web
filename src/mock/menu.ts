@@ -1,20 +1,24 @@
 export const menuList: any = [
   {
-    title: 'Home',
+    title: '首页',
     path: '/home',
     icon: 'HomeFilled',
   },
   {
-    title: 'API',
+    title: '示例',
     icon: 'List',
     children: [
       {
-        title: 'FakeStore',
+        title: '简单列表',
         path: '/singleList',
       },
       {
-        title: 'Fakerapis',
+        title: '分页列表',
         path: '/pageList',
+      },
+      {
+        title: '表单',
+        path: '/formPage',
       },
     ],
   },
