@@ -48,6 +48,6 @@ const onSubmit = () => {
 <style lang="stylus" scoped>
 .box-card {
   width 360px
-  margin 20% auto 0
+  margin 10% auto 0
 }
 </style>

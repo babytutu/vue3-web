@@ -4,9 +4,9 @@
       <topBar />
     </div>
     <div class="home-waper-body">
-      <sideBar @addTab="addTabByMenu" />
+      <sideBar @addTab="addTab" />
       <div class="home-waper-content">
-        <tabMenu ref="addTab" />
+        <tabMenu ref="tabMenuRef" />
         <div class="home-waper-view">
           <router-view v-slot="{ Component, route }">
             <keep-alive :max="3">
@@ -20,19 +20,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 
 import type { tabType } from '@/components/frame/tabMenu.vue'
 
-const addTab = ref()
+const tabMenuRef = ref()
 
 /**
  * open new tab
  * @param tabInfo
  */
-function addTabByMenu(tabInfo: tabType) {
-  addTab.value?.addTab(tabInfo)
+function addTab(tabInfo: tabType) {
+  tabMenuRef.value?.addTab(tabInfo)
 }
+
+/**
+ * 关闭页签
+ * @param path 路径
+ */
+function removeTab(path: string) {
+  tabMenuRef.value?.removeTab(path)
+}
+
+provide('addTab', addTab)
+provide('removeTab', removeTab)
+
 </script>
 
 <style lang="stylus" scoped>
