@@ -6,7 +6,8 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "components.d.ts"
+    "components.d.ts",
+    "auto-imports.d.ts"
   ],
   "compilerOptions": {
     "composite": true,

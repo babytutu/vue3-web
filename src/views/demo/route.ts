@@ -24,11 +24,19 @@ export const route: any[] = [
     },
   },
   {
-    path: '/formPage',
-    name: 'formPage',
+    path: '/addForm',
+    name: 'addForm',
     component: () => import('@/views/demo/formPage.vue'),
     meta: {
-      title: '表单',
+      title: '新增',
+    },
+  },
+  {
+    path: '/editForm/:id',
+    name: 'editForm',
+    component: () => import('@/views/demo/formPage.vue'),
+    meta: {
+      title: '编辑',
     },
   },
 ]

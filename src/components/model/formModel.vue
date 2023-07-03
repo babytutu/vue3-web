@@ -1,5 +1,5 @@
 <template>
-  <el-form :inline="inline" ref="ruleFormRef" :model="ruleForm" label-width="120px">
+  <el-form :size="size" :inline="inline" ref="ruleFormRef" :model="ruleForm" label-width="120px">
     <el-form-item
       v-for="i in formItem"
       :key="i.prop"
@@ -7,6 +7,7 @@
       :prop="i.prop"
       :rules="i.rules"
     >
+    <el-space wrap>
       <template v-if="i.type === 'input'">
         <el-input
           :style="i.style || itemStyle"
@@ -38,13 +39,14 @@
           <el-option v-for="item in i.options" :label="item.label" :value="item.value" />
         </el-select>
       </template>
-      <template v-if="i.type === 'date'">
+      <template v-if="['date', 'datetime', 'datetimerange', 'daterange'].includes(i.type)">
         <el-date-picker
           :style="i.style || itemStyle"
           v-model="ruleForm[i.prop]"
-          :type="i.datetype || 'datetime'"
+          :type="i.type"
           :format="i.format || 'YYYY/MM/DD HH:mm:ss'"
           :value-format="i.format || 'YYYY/MM/DD HH:mm:ss'"
+          :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
           clearable
         />
       </template>
@@ -79,6 +81,8 @@
           show-word-limit
         />
       </template>
+      <slot :name="i.prop" :item="i" />
+    </el-space>
     </el-form-item>
     <el-form-item>
       <slot />
@@ -91,10 +95,10 @@ import { ref, reactive } from 'vue'
 const ruleFormRef = ref<any>()
 
 export interface formType {
-  label: string
   prop: string
+  label?: string
   rules?: any[]
-  type: string
+  type?: string
   min?: number
   max?: number
   options?: any[]
@@ -106,7 +110,7 @@ export interface formType {
   row?: number
 }
 
-const prop = defineProps(['formData', 'formItem', 'itemStyle', 'inline'])
+const prop = defineProps(['formData', 'formItem', 'itemStyle', 'inline', 'size'])
 
 const ruleForm = reactive<any>(prop.formData)
 
@@ -134,8 +138,6 @@ const resetForm = () => {
 const changeValue = (key: string, value: any) => {
   ruleForm[key] = value
 }
-
-
 
 defineExpose({ submitForm, resetForm, changeValue })
 </script>

@@ -1,7 +1,7 @@
 <template>
-  <el-descriptions v-loading="loading" :title="id" :column="1" border>
+  <el-descriptions v-loading="loading" :column="1" border>
     <template #extra>
-      <el-button @click="removeTab($route.path)">Close</el-button>
+      <el-button @click="removeTab($route.path)">关闭</el-button>
     </template>
     <el-descriptions-item v-for="i in Object.keys(info)" :key="i" :label="i">{{info[i]}}</el-descriptions-item>
   </el-descriptions>
@@ -10,10 +10,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { get } from '@/utils/http'
+import { http } from '@/utils/http'
 import { inject } from 'vue'
-const removeTab: any = inject('removeTab')
 
+const removeTab: any = inject('removeTab')
 
 const route = useRoute()
 const id = route.params.id
@@ -22,8 +22,11 @@ const info: any = ref({})
 const loading = ref(true)
 
 onMounted(() => {
-  get(`https://fakerapi.it/api/v1/addresses?_quantity=1&_characters=50`).then((res: any) => {
-    info.value = res.data[0]
+  http('https://5ykenqzacs.hk.aircode.run/getItem', {
+    type: 'demoList',
+    id
+  }).then((res: any) => {
+    info.value = res.result
     loading.value = false
   }).catch(() => {
     loading.value = false

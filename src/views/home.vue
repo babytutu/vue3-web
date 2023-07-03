@@ -2,6 +2,7 @@
   <el-steps :active="5">
     <el-step v-for="i in steps" :key="i.title" :title="i.title" :description="i.description" />
   </el-steps>
+  <el-divider />
   <el-descriptions title="文件说明" :column="1" border>
     <el-descriptions-item v-for="i in apiList" :key="i.label" :label="i.label">
       {{ i.content }}

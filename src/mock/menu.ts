@@ -18,7 +18,7 @@ export const menuList: any = [
       },
       {
         title: '表单',
-        path: '/formPage',
+        path: '/addForm',
       },
     ],
   },
