@@ -44,7 +44,6 @@ function removeTab(path: string) {
 
 provide('addTab', addTab)
 provide('removeTab', removeTab)
-
 </script>
 
 <style lang="stylus" scoped>

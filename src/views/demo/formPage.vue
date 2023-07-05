@@ -1,10 +1,8 @@
 <template>
-  <formModel v-loading="loading" ref="ruleFormRef" :formData="ruleForm" :formItem="formItem" :itemStyle="itemStyle">
+  <formModel v-loading="loading" ref="ruleFormRef" :formData="ruleForm" :formItem="formItem" :itemStyle="itemStyle" @submit="submitForm" submitTxt="提交">
     <template #name>
       <el-button type="primary" @click="changeValue('name', 'test')">修改活动名称</el-button>
     </template>
-    <el-button type="primary" @click="submitForm">提交</el-button>
-    <el-button @click="resetForm">重置</el-button>
   </formModel>
 </template>
 
@@ -14,12 +12,17 @@ import { useRoute } from 'vue-router'
 import type { formType } from '@/components/model/formModel.vue'
 import { http } from '@/utils/http'
 
+import { useTabStore } from '@/stores/tab'
+
 import { inject } from 'vue'
 
 const removeTab: any = inject('removeTab')
 
+const store = useTabStore()
+
 const route = useRoute()
 const id: any = route.params.id
+const copyId: any = route.params.copyId
 
 const loading = ref(true)
 
@@ -127,6 +130,9 @@ const formItem = computed<formType[]>(() => [
     label: '说明',
     prop: 'test',
     type: 'input'
+  },
+  {
+    type: 'submitBtn'
   }
 ])
 
@@ -140,8 +146,11 @@ const submitForm = async () => {
         type: 'demoList',
       }).then(({ success }) => {
         if (success) {
-          ElMessage('修改成功')
+          ElMessage.success('修改成功')
+          store.addTab('pageList')
           removeTab(route.path)
+        } else {
+          ElMessage.error('修改失败')
         }
       })
     } else {
@@ -151,6 +160,7 @@ const submitForm = async () => {
       }).then(({ success }) => {
         if (success) {
           ElMessage.success('提交成功')
+          store.addTab('pageList')
           removeTab(route.path)
         } else {
           ElMessage.error('提交失败')
@@ -158,10 +168,6 @@ const submitForm = async () => {
       })
     }
   }
-}
-
-const resetForm = () => {
-  ruleFormRef.value?.resetForm()
 }
 
 const changeValue = (key: string, value: any) => {
@@ -186,8 +192,8 @@ const getItemById = (id: string) => {
 onBeforeMount(async () => {
   // 获取下拉配置
   await getOptions()
-  if (id) {
-    await getItemById(id)
+  if (id || copyId) {
+    await getItemById(id || copyId)
   }
   loading.value = false
 })

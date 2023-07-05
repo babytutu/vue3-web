@@ -12,6 +12,3 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 const size = 'large'
 const zIndex = 3000
 </script>
-
-<style scoped>
-</style>

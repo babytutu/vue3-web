@@ -39,4 +39,12 @@ export const route: any[] = [
       title: '编辑',
     },
   },
+  {
+    path: '/copyForm/:copyId',
+    name: 'copyForm',
+    component: () => import('@/views/demo/formPage.vue'),
+    meta: {
+      title: '复制',
+    },
+  },
 ]

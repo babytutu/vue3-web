@@ -39,20 +39,3 @@ body {
 #nprogress .bar {
   height: 100% !important;
 }
-
-.flex {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.flex-content {
-  flex: 1;
-  height: 100%;
-  overflow: auto;
-}
-
-.flex-footer {
-  margin-top: 10px;
-}

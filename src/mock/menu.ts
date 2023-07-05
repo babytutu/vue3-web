@@ -16,10 +16,6 @@ export const menuList: any = [
         title: '分页列表',
         path: '/pageList',
       },
-      {
-        title: '表单',
-        path: '/addForm',
-      },
     ],
   },
 ]
