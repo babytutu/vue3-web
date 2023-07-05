@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <Layout>
     <el-card class="box-card" header="演示后台">
       <el-form label-width="80px" :model="loginInfo">
         <el-form-item label="帐号">
@@ -19,7 +19,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-  </div>
+  </Layout>
 </template>
 
 <script lang="ts" setup>
