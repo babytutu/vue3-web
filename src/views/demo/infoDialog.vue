@@ -1,7 +1,6 @@
 <template>
-  <DialogModel draggable title="新增" :model-value="modelValue" width="400px" @close="close">
+  <DialogModel title="新增" :model-value="modelValue" width="400px" @close="close">
     <formModel
-      inline
       label-width="90px"
       ref="ruleFormRef"
       :formData="form"
@@ -48,8 +47,7 @@ const formItem = reactive<any[]>([
     type: 'input',
   },
   {
-    label: ' ',
-    type: 'submitBtn',
+    prop: 'submitBtn',
   },
 ])
 

@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    class="pagination"
     v-model:current-page="page"
     v-model:page-size="pageSize"
     :background="props.background"
@@ -22,21 +23,21 @@ const emit = defineEmits(['size-change', 'current-change'])
  * @see https://element-plus.org/zh-CN/component/pagination.html#api
  */
 export interface Props {
+  total: number
   pageSizes?: Array<number>
   layout?: string
   small?: boolean
   background?: boolean
   defaultPageSize?: number
-  total: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  total: 0,
   pageSizes: () => [10, 20, 50, 100],
   layout: 'total, sizes, ->, prev, pager, next',
   small: true,
   background: true,
-  defaultPageSize: 10,
-  total: 0,
+  defaultPageSize: 20,
 })
 
 const page = ref(1)
@@ -49,3 +50,8 @@ const handleSizeChange = (val: number) => {
 
 const handleCurrentChange = (val: number) => emit('current-change', val)
 </script>
+<style lang="stylus" scoped>
+.pagination {
+  padding-top 10px
+}
+</style>

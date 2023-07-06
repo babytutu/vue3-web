@@ -1,5 +1,12 @@
 <template>
-  <el-table @selection-change="selectionChange" ref="tableModelRef" v-loading="loading" :data="data" height="100%" border>
+  <el-table
+    @selection-change="selectionChange"
+    ref="tableModelRef"
+    v-loading="loading"
+    :data="data"
+    height="100%"
+    border
+  >
     <el-table-column v-if="selection" type="selection" width="55" />
     <el-table-column type="index" width="50" />
     <el-table-column
@@ -14,9 +21,16 @@
       <template #default="{ row }">
         <slot :name="i.prop" :row="row">
           <template v-if="i.prop === 'action'">
-            <el-button v-for="item in i.options" :key="item.type" link type="primary" @click="item.onClick(row)">{{item.name}}</el-button>
+            <el-button
+              v-for="item in i.options"
+              :key="item.name"
+              link
+              type="primary"
+              @click="item.onClick(row)"
+              >{{ item.name }}</el-button
+            >
           </template>
-          <div v-else v-html="row[i.prop]"></div>
+          <div v-else v-text="row[i.prop]"></div>
         </slot>
       </template>
     </el-table-column>
@@ -31,28 +45,38 @@ const loading = ref(false)
 
 const tableModelRef = ref()
 
+interface options {
+  name: string
+  onClick: any
+}
+
+interface headerType {
+  prop: string
+  label: string
+  fixed?: boolean | string
+  sortable?: boolean | string
+  width?: string
+  options?: Array<options>
+}
+
 defineProps({
   data: Array<any>,
   header: {
-    type: Array<any>,
+    type: Array<headerType>,
     required: true,
   },
   selection: {
-    type: Boolean
-  }
+    type: Boolean,
+  },
 })
 
 function setLoading(state: boolean) {
   loading.value = state
 }
 
-function getSelectionRows() {
-  return tableModelRef.value?.getSelectionRows()
-}
-
 function selectionChange(rows: any[]) {
   emit('selection-change', rows)
 }
 
-defineExpose({ setLoading, getSelectionRows })
+defineExpose({ setLoading })
 </script>

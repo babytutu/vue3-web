@@ -5,7 +5,7 @@
     :inline="inline"
     ref="ruleFormRef"
     :model="ruleForm"
-    label-width="120px"
+    :label-width="labelWidth"
   >
     <el-form-item
       v-for="i in formItem"
@@ -46,7 +46,7 @@
             <el-option v-for="item in i.options" :label="item.label" :value="item.value" />
           </el-select>
         </template>
-        <template v-if="['date', 'datetime', 'datetimerange', 'daterange'].includes(i.type)">
+        <template v-if="i.type && ['date', 'datetime', 'datetimerange', 'daterange'].includes(i.type)">
           <el-date-picker
             :style="i.style || itemStyle"
             v-model="ruleForm[i.prop]"
@@ -90,11 +90,11 @@
         </template>
         <slot :name="i.prop" :item="i" />
       </el-space>
-      <template v-if="i.type === 'searchBtn'">
+      <template v-if="i.prop === 'searchBtn'">
         <el-button type="primary" @click="emit('submit')" :disabled="loading">查询</el-button>
         <el-button :disabled="loading" @click="reset">重置</el-button>
       </template>
-      <template v-if="i.type === 'submitBtn'">
+      <template v-if="i.prop === 'submitBtn'">
         <el-button type="primary" @click="emit('submit')" :disabled="loading">提交</el-button>
         <el-button :disabled="loading" @click="emit('close')">关闭</el-button>
       </template>
@@ -109,14 +109,20 @@ import { ref, reactive } from 'vue'
 
 const ruleFormRef = ref<any>()
 
+interface options {
+  label: string
+  value?: any
+  name?: string
+}
+
 export interface formType {
-  prop?: string
+  prop: string
+  type?: string
   label?: string
   rules?: any[]
-  type?: string
   min?: number
   max?: number
-  options?: any[]
+  options?: Array<options>
   datetype?: string
   format?: string
   maxlength?: number
@@ -127,18 +133,22 @@ export interface formType {
 
 export interface Props {
   formData: any
-  formItem: any[]
+  formItem: Array<formType>
   itemStyle?: any
   inline?: boolean
   size?: string
+  labelWidth?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   formData: undefined,
   formItem: undefined,
-  itemStyle: undefined,
+  itemStyle: {
+    width: '220px'
+  },
   inline: false,
   size: '',
+  labelWidth: '',
 })
 
 const emit = defineEmits(['submit', 'close'])

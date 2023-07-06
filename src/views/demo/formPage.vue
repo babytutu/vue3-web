@@ -1,9 +1,22 @@
 <template>
-  <formModel v-loading="loading" ref="ruleFormRef" :formData="ruleForm" :formItem="formItem" :itemStyle="itemStyle" @submit="submitForm" submitTxt="提交">
-    <template #name>
-      <el-button type="primary" @click="changeValue('name', 'test')">修改活动名称</el-button>
-    </template>
-  </formModel>
+  <el-scrollbar>
+    <formModel
+      v-loading="loading"
+      ref="ruleFormRef"
+      :formData="ruleForm"
+      :formItem="formItem"
+      label-width="120px"
+      @submit="submitForm"
+      @close="removeTab($route.path)"
+    >
+      <template #name>
+        <el-button type="primary" @click="changeValue('name', 'test')">修改活动名称</el-button>
+      </template>
+      <template #test>
+        <el-input v-model="ruleForm.test"></el-input>
+      </template>
+    </formModel>
+  </el-scrollbar>
 </template>
 
 <script lang="ts" setup>
@@ -11,14 +24,15 @@ import { onBeforeMount, reactive, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import type { formType } from '@/components/model/formModel.vue'
 import { http } from '@/utils/http'
+import { getOptions } from '@/utils/apis'
 
-import { useTabStore } from '@/stores/tab'
+import { useReloadTabsStore } from '@/stores/reloadTabs'
 
 import { inject } from 'vue'
 
 const removeTab: any = inject('removeTab')
 
-const store = useTabStore()
+const store = useReloadTabsStore()
 
 const route = useRoute()
 const id: any = route.params.id
@@ -40,30 +54,7 @@ const ruleForm = reactive<any>({
   test: 'abc',
 })
 
-const itemStyle = {
-  width: '220px',
-}
-
-const options = reactive<any>({})
-
-const getOptions = async () => {
-  const local = sessionStorage.getItem('options')
-
-  if (local) {
-    Object.assign(options, JSON.parse(local))
-    return
-  }
-  const { result } = await http('https://5ykenqzacs.hk.aircode.run/getAllList', {
-    type: 'options'
-  })
-  result.forEach((i: any) => {
-    if (!options[i.type]) {
-      options[i.type] = []
-    }
-    options[i.type].push(i)
-  })
-  sessionStorage.setItem('options', JSON.stringify(options))
-}
+const options = ref<any>({})
 
 const formItem = computed<formType[]>(() => [
   {
@@ -85,7 +76,7 @@ const formItem = computed<formType[]>(() => [
     prop: 'region',
     rules: [{ required: true, message: '请选择地区', trigger: 'change' }],
     type: 'select',
-    options: options.region,
+    options: options.value.region,
     multiple: true,
   },
   {
@@ -107,13 +98,13 @@ const formItem = computed<formType[]>(() => [
     prop: 'type',
     type: 'checkbox',
     rules: [{ type: 'array', required: true, message: '请选择至少1个', trigger: 'change' }],
-    options: options.type,
+    options: options.value.type,
   },
   {
     label: '资源类型',
     prop: 'resource',
     type: 'radio',
-    options: options.resource,
+    options: options.value.resource,
   },
   {
     label: '说明',
@@ -129,11 +120,10 @@ const formItem = computed<formType[]>(() => [
   {
     label: '说明',
     prop: 'test',
-    type: 'input'
   },
   {
-    type: 'submitBtn'
-  }
+    prop: 'submitBtn',
+  },
 ])
 
 const submitForm = async () => {
@@ -147,8 +137,7 @@ const submitForm = async () => {
       }).then(({ success }) => {
         if (success) {
           ElMessage.success('修改成功')
-          store.addTab('pageList')
-          removeTab(route.path)
+          leavePage()
         } else {
           ElMessage.error('修改失败')
         }
@@ -160,14 +149,18 @@ const submitForm = async () => {
       }).then(({ success }) => {
         if (success) {
           ElMessage.success('提交成功')
-          store.addTab('pageList')
-          removeTab(route.path)
+          leavePage()
         } else {
           ElMessage.error('提交失败')
         }
       })
     }
   }
+}
+
+const leavePage = () => {
+  store.addReloadTab('pageList')
+  removeTab(route.path)
 }
 
 const changeValue = (key: string, value: any) => {
@@ -191,7 +184,7 @@ const getItemById = (id: string) => {
 
 onBeforeMount(async () => {
   // 获取下拉配置
-  await getOptions()
+  options.value = await getOptions()
   if (id || copyId) {
     await getItemById(id || copyId)
   }

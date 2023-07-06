@@ -26,3 +26,7 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# element-plus auto files
+components.d.ts
+auto-imports.d.ts

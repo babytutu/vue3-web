@@ -3,6 +3,7 @@
     :model-value="modelValue"
     :title="title"
     :width="width"
+    :draggable="draggable"
     @closed="close"
     :close-on-click-modal="false"
   >
@@ -19,6 +20,7 @@ export interface Props {
   title?: string
   width?: string
   showFooter?: boolean
+  draggable?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -26,6 +28,7 @@ withDefaults(defineProps<Props>(), {
   title: '标题',
   width: '600px',
   showFooter: false,
+  draggable: true,
 })
 
 const emit = defineEmits(['update:modelValue', 'close'])

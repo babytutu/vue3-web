@@ -3,7 +3,6 @@
     <template #header>
       <formModel
         inline
-        label-width="60px"
         ref="searchFormRef"
         :formData="searchForm"
         :formItem="searchItem"
@@ -92,7 +91,7 @@ const searchItem = reactive<any[]>([
     type: 'input',
   },
   {
-    type: 'searchBtn',
+    prop: 'searchBtn',
   },
 ])
 

@@ -9,7 +9,8 @@
         <tabMenu ref="tabMenuRef" />
         <div class="home-waper-view">
           <router-view v-slot="{ Component, route }">
-            <keep-alive :max="3">
+            <!--https://cn.vuejs.org/guide/built-ins/keep-alive.html-->
+            <keep-alive :max="3" :include="/List/">
               <component :is="Component" :key="route.path" />
             </keep-alive>
           </router-view>

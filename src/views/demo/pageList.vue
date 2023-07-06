@@ -3,7 +3,6 @@
     <template #header>
       <formModel
         inline
-        label-width="60px"
         ref="searchFormRef"
         :formData="searchForm"
         :formItem="searchItem"
@@ -13,12 +12,21 @@
         <el-button type="primary" :disabled="!selectRows.length" @click="handleBatchDelete">批量删除</el-button>
       </formModel>
     </template>
-    <TableModel @selection-change="changeRows" selection :data="tableData" ref="tableRef" :header="header"> </TableModel>
+    <TableModel @selection-change="changeRows" selection :data="tableData" ref="tableRef" :header="header">
+      <template #region="{row}">
+        {{ row.region.join() }}
+      </template>
+      <template #type="{row}">
+        <el-space wrap>
+          <el-tag v-for="i in row.type" :key="i">{{i}}</el-tag>
+        </el-space>
+      </template>
+    </TableModel>
     <template #footer>
       <pageModel
         ref="pageModel"
-        :total="total"
-        :default-page-size="10"
+        :total="pageData.total"
+        :default-page-size="20"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -27,17 +35,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, onActivated } from 'vue'
+import { ref, reactive, onBeforeMount, onActivated, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { http } from '@/utils/http'
-import { useTabStore } from '@/stores/tab'
+import { useReloadTabsStore } from '@/stores/reloadTabs'
+import { getOptions } from '@/utils/apis'
 
-const store = useTabStore()
+const store = useReloadTabsStore()
 
 const router = useRouter()
-const page = ref<number>(1)
-const total = ref<number>(0)
-const size = ref(10)
+
+const pageData = reactive<any>({
+  page: 1,
+  total: 0,
+  size: 20
+})
+
+const options = ref<any>({})
 
 const tableData = ref<Array<any>>([])
 const selectRows = ref<Array<any>>([])
@@ -50,33 +64,53 @@ const searchForm = reactive({
   name: '',
 })
 
-const searchItem = reactive<any[]>([
+const searchItem = computed<any[]>(() => ([
   {
     label: '名称',
     prop: 'name',
     type: 'input',
   },
   {
-    type: 'searchBtn',
+    label: '活动地区',
+    prop: 'region',
+    type: 'select',
+    options: options.value.region
   },
-])
+  {
+    label: '活动分类',
+    prop: 'type',
+    type: 'select',
+    options: options.value.type
+  },
+  {
+    prop: 'searchBtn',
+  },
+]))
 
 const header: any[] = [
   {
     prop: 'name',
-    label: '名称',
+    label: '活动名称',
   },
   {
     prop: 'region',
-    label: '地区',
-  },
-  {
-    prop: 'num',
-    label: '数量',
+    label: '活动地区',
   },
   {
     prop: 'type',
-    label: '类型',
+    label: '活动分类',
+  },
+  {
+    prop: 'createdAt',
+    label: '创建时间',
+    sortable: true,
+    width: '240',
+  },
+  {
+    prop: 'updatedAt',
+    label: '更新时间',
+    sortable: true,
+    width: '240',
   },
   {
     prop: 'action',
@@ -104,13 +138,13 @@ const header: any[] = [
 ]
 
 const handleSizeChange = (val: number) => {
-  size.value = val
-  page.value = 1
+  pageData.size = val
+  pageData.page = 1
   getList()
 }
 
 const handleCurrentChange = (val: number) => {
-  page.value = val
+  pageData.page = val
   getList()
 }
 
@@ -120,19 +154,19 @@ const getList = async () => {
   searchFormRef.value?.setLoading(true)
   http(`https://5ykenqzacs.hk.aircode.run/getList`, {
     type: 'demoList',
-    size: size.value,
-    page: page.value,
+    size: pageData.size,
+    page: pageData.page,
     search: data
   })
     .then((res) => {
       tableData.value = res.result || []
-      total.value = res.total || 0
+      pageData.total = res.total || 0
       tableRef.value?.setLoading(false)
       searchFormRef.value?.setLoading(false)
     })
     .catch(() => {
       tableData.value = []
-      total.value = 0
+      pageData.total = 0
       tableRef.value?.setLoading(false)
       searchFormRef.value?.setLoading(false)
     })
@@ -200,12 +234,13 @@ const handleBatchDelete = () => {
   })
 }
 
-onMounted(() => {
+onBeforeMount(async () => {
+  options.value = await getOptions()
   getList()
 })
 
 onActivated(() => {
-  store.checkPath('pageList', () => {
+  store.checkReload('pageList', () => {
     getList()
   })
 })

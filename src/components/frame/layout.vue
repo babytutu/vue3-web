@@ -23,6 +23,5 @@
   flex: 1;
   height: 100%;
   overflow: auto;
-  margin: 10px 0
 }
 </style>
