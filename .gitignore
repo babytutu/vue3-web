@@ -27,10 +27,6 @@ coverage
 *.sln
 *.sw?
 
-# element-plus auto files
-components.d.ts
-auto-imports.d.ts
-
 .pnp.*
 .yarn/*
 !.yarn/patches
