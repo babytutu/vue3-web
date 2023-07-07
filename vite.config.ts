@@ -35,6 +35,7 @@ export default defineConfig({
       inject: {
         data: {
           version,
+          buildTime: new Date().toLocaleString(),
         },
       },
     }),

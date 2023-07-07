@@ -19,6 +19,11 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <template #footer>
+      <div class="version">
+        vue3-web-demo {{version?.content}} {{ buildTime?.content }}
+      </div>
+    </template>
   </Layout>
 </template>
 
@@ -32,6 +37,9 @@ const loginInfo = ref<any>({
   username: '',
   password: '',
 })
+
+const version: any = document.querySelector('meta[name="version"]')
+const buildTime: any = document.querySelector('meta[name="buildTime"]')
 
 const loading = ref(false)
 
@@ -49,5 +57,12 @@ const onSubmit = () => {
 .box-card {
   width 360px
   margin 10% auto 0
+}
+
+.version {
+  font-size 12px
+  text-align center
+  color: #909399
+  line-height 3
 }
 </style>
