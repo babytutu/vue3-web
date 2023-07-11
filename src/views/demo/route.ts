@@ -47,4 +47,12 @@ export const route: any[] = [
       title: '复制',
     },
   },
+  {
+    path: '/echartPage',
+    name: 'echartPage',
+    component: () => import('@/views/demo/echartPage.vue'),
+    meta: {
+      title: 'echart',
+    },
+  },
 ]

@@ -25,6 +25,10 @@ export const menuList: any = [
           },
         ],
       },
+      {
+        title: 'echart',
+        path: '/echartPage',
+      },
     ],
   },
 ]
