@@ -55,6 +55,9 @@ export default defineConfig({
           if (id.includes('element')) {
             return 'element'
           }
+          if (id.includes('echarts')) {
+            return 'echarts'
+          }
           if (id.includes('/views')) {
             return 'views'
           }
