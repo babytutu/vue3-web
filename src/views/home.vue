@@ -1,5 +1,5 @@
 <template>
-  <el-descriptions title="文件说明" :column="1" border>
+  <el-descriptions :title="title" :column="1" border>
     <el-descriptions-item v-for="i in apiList" :key="i.label" :label="i.label">
       {{ i.content }}
     </el-descriptions-item>
@@ -7,6 +7,12 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import useProxy from '@/utils/useProxy'
+const proxy = useProxy()
+
+const title = ref(proxy.$translate('home.title'))
+
 const apiList: any[] = [
   {
     label: '全局样式',

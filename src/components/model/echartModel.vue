@@ -3,8 +3,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch, shallowRef } from 'vue'
-import echarts from '@/utils/echart'
-import type { ECOption } from '@/utils/echart'
+import echarts, { type ECOption } from '@/utils/echart'
 
 const chartDom = ref<any>(null)
 

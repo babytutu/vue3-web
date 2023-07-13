@@ -12,6 +12,8 @@ import 'nprogress/nprogress.css'
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
+import tool from '@/utils/tool'
+
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -22,6 +24,13 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+app.use(tool, {
+  home: {
+    title: 'vue3 demo',
+  },
+})
+app.config.globalProperties.msg = 'hello'
 
 NProgress.configure({
   easing: 'ease', // 动画方式，和css动画属性一样（默认：ease）
