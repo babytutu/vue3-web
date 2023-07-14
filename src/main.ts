@@ -13,6 +13,7 @@ import 'nprogress/nprogress.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import tool from '@/utils/tool'
+import log from 'tui-vue-log'
 
 const app = createApp(App)
 
@@ -30,7 +31,12 @@ app.use(tool, {
     title: 'vue3 demo',
   },
 })
-app.config.globalProperties.msg = 'hello'
+
+app.use(log, {
+  style: 'padding: 8px; color: #fff',
+  background: ['#333', 'red'],
+  border: '6px',
+})
 
 NProgress.configure({
   easing: 'ease', // 动画方式，和css动画属性一样（默认：ease）

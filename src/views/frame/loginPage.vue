@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <el-card class="box-card" header="演示后台">
+    <el-card class="box-card" :header="$translate('home.title')">
       <el-form label-width="80px" :model="loginInfo">
         <el-form-item label="帐号">
           <el-input v-model="loginInfo.username" maxLength="10" />
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -36,6 +36,15 @@ const router = useRouter()
 const loginInfo = ref<any>({
   username: '',
   password: '',
+})
+
+const log: any = inject('log')
+
+log('title', 123)
+
+log('object', {
+  name: 'abc',
+  age: 18
 })
 
 const version: any = document.querySelector('meta[name="version"]')
