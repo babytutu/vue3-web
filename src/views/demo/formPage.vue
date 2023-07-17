@@ -83,7 +83,8 @@ const formItem = computed<formType[]>(() => [
     label: '活动时间',
     prop: 'datetime',
     rules: [{ required: true, message: '请选择活动时间', trigger: 'change' }],
-    type: 'datetimerange',
+    dateType: 'datetimerange',
+    type: 'date',
     style: {
       width: '500px',
     },

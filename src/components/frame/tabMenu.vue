@@ -80,7 +80,7 @@ const addTab = (paneObj: tabType) => {
 }
 
 // 关闭页签函数
-const removeTab = (targetKey: string) => {
+const removeTab = (targetKey: any) => {
   const tabs = panes.value
   // 如关闭高亮页签，找到最近一次激活的页签并激活
   if (activeKey.value === targetKey) {
@@ -141,7 +141,7 @@ const closeMenu = () => {
 }
 
 // 页签变更时触发
-const changeTab = (activeKeyId: string) => {
+const changeTab = (activeKeyId: any) => {
   let oneTab = panes.value.find((i: tabType) => i.path === activeKeyId)
   // 路由不相同触发页面跳转
   if (oneTab && router.currentRoute.value.path !== oneTab.path) {

@@ -19,6 +19,7 @@
 |---|---|---|---|
 |prop|Model 的键名|string|是|
 |type|form类型|string|否|
+|dateType|时间选择器type|year/month/date/dates/datetime/ week/datetimerange/daterange/ monthrange|否|
 |label|标签名|string|否|
 |rules|验证规则|any[]|否|
 |min|数字输入最小值|number|否|

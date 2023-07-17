@@ -40,12 +40,12 @@ const loginInfo = ref<any>({
 
 const log: any = inject('log')
 
-log('title', 123)
+log('title', 123, 4, 5, 6)
 
 log('object', {
   name: 'abc',
   age: 18
-})
+}, 5, 7)
 
 const version: any = document.querySelector('meta[name="version"]')
 const buildTime: any = document.querySelector('meta[name="buildTime"]')

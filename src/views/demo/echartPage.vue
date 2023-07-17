@@ -35,13 +35,13 @@ const height = ref('300px')
 const chartDom = ref()
 const type = ref('bar')
 
-function changeSize(size: string) {
+function changeSize(size: any) {
   chartDom.value?.resize({
     height: size,
   })
 }
 
-function changeType(val: string) {
+function changeType(val: any) {
   type.value = val
 }
 

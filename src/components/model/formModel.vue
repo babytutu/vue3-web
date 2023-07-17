@@ -46,11 +46,11 @@
             <el-option v-for="item in i.options" :label="item.label" :value="item.value" />
           </el-select>
         </template>
-        <template v-if="i.type && ['date', 'datetime', 'datetimerange', 'daterange'].includes(i.type)">
+        <template v-if="i.type === 'date'">
           <el-date-picker
             :style="i.style || itemStyle"
             v-model="ruleForm[i.prop]"
-            :type="i.type"
+            :type="i.dateType"
             :format="i.format"
             :value-format="i.format"
             :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
@@ -117,7 +117,17 @@ interface options {
 
 export interface formType {
   prop: string
-  type?: string
+  type?: 'input' | 'input-number' | 'select' | 'date' | 'switch' | 'checkbox' | 'radio' | 'textarea'
+  dateType?:
+    | 'date'
+    | 'year'
+    | 'month'
+    | 'dates'
+    | 'week'
+    | 'datetime'
+    | 'datetimerange'
+    | 'daterange'
+    | 'monthrange'
   label?: string
   rules?: any[]
   min?: number
@@ -136,7 +146,7 @@ export interface Props {
   formItem: Array<formType>
   itemStyle?: any
   inline?: boolean
-  size?: string
+  size?: '' | 'default' | 'large' | 'small'
   labelWidth?: string
 }
 
@@ -144,7 +154,7 @@ const props = withDefaults(defineProps<Props>(), {
   formData: undefined,
   formItem: undefined,
   itemStyle: {
-    width: '220px'
+    width: '220px',
   },
   inline: false,
   size: '',
