@@ -36,6 +36,7 @@ app.use(log, {
   style: 'padding: 8px; color: #fff',
   background: ['#333', 'red'],
   border: '6px',
+  display: import.meta.env.MODE === 'development',
 })
 
 NProgress.configure({
