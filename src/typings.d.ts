@@ -2,6 +2,7 @@ import 'vue-router'
 declare module 'vue-router' {
   interface RouteMeta {
     closable?: boolean = true
+    keepAlive?: boolean = true
     title: string
   }
 }

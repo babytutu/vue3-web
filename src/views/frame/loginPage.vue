@@ -20,15 +20,13 @@
       </el-form>
     </el-card>
     <template #footer>
-      <div class="version">
-        vue3-web-demo {{version?.content}} {{ buildTime?.content }}
-      </div>
+      <div class="version">vue3-web-demo {{ version?.content }} {{ buildTime?.content }}</div>
     </template>
   </Layout>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from 'vue'
+import { ref, inject, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -38,17 +36,10 @@ const loginInfo = ref<any>({
   password: '',
 })
 
-const log: any = inject('log')
+const log = inject('log') as Function
 
-log('title', 123, 4, 5, 6)
-
-log('object', {
-  name: 'abc',
-  age: 18
-}, 5, 7)
-
-const version: any = document.querySelector('meta[name="version"]')
-const buildTime: any = document.querySelector('meta[name="buildTime"]')
+const version: any = computed(() => document.querySelector('meta[name="version"]'))
+const buildTime: any = computed(() => document.querySelector('meta[name="buildTime"]'))
 
 const loading = ref(false)
 
@@ -61,6 +52,11 @@ const onSubmit = () => {
     router.push('/home')
   }, 1000)
 }
+
+onMounted(() => {
+  log('version', version.value?.content)
+  log('buildTime', buildTime.value?.content)
+})
 </script>
 <style lang="stylus" scoped>
 .box-card {

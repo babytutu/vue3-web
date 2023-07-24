@@ -53,6 +53,7 @@ export const route: any[] = [
     component: () => import('@/views/demo/echartPage.vue'),
     meta: {
       title: 'echart',
+      keepAlive: false,
     },
   },
 ]

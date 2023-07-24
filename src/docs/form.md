@@ -4,43 +4,43 @@
 
 ## 参数
 
-|名称|说明|类型|是否必填|
-|---|---|---|---|
-|formData|表单数据合集|Object|是|
-|formItem|表单内容配置|Array\<formType>|是|
-|itemStyle|输入框样式|默认宽度220px|否|
-|inline|是否行内表单|boolean|否|
-|size|表单尺寸|string|否|
-|labelWidth|标签宽度|string|否|
+| 名称       | 说明         | 类型             | 是否必填 |
+| ---------- | ------------ | ---------------- | -------- |
+| formData   | 表单数据合集 | Object           | 是       |
+| formItem   | 表单内容配置 | Array\<formType> | 是       |
+| itemStyle  | 输入框样式   | 默认宽度 220px   | 否       |
+| inline     | 是否行内表单 | boolean          | 否       |
+| size       | 表单尺寸     | string           | 否       |
+| labelWidth | 标签宽度     | string           | 否       |
 
 - formType
 
-|名称|说明|类型|是否必填|
-|---|---|---|---|
-|prop|Model 的键名|string|是|
-|type|form类型|string|否|
-|dateType|时间选择器type|year/month/date/dates/datetime/ week/datetimerange/daterange/ monthrange|否|
-|label|标签名|string|否|
-|rules|验证规则|any[]|否|
-|min|数字输入最小值|number|否|
-|max|数字输入最大值|number|否|
-|options|下拉菜单，多选参数配置数组|Array\<options>|否|
-|datetype|时间控件类型|string|否|
-|format|时间控件格式|string|否|
-|maxlength|输入框最大长度|number|否|
-|style|样式|any|否|
-|multiple|是否多选|boolean|否|
-|row|textarea行数|number|否|
+| 名称      | 说明                       | 类型                                                                     | 是否必填 |
+| --------- | -------------------------- | ------------------------------------------------------------------------ | -------- |
+| prop      | Model 的键名               | string                                                                   | 是       |
+| type      | form 类型                  | string                                                                   | 否       |
+| dateType  | 时间选择器 type            | year/month/date/dates/datetime/ week/datetimerange/daterange/ monthrange | 否       |
+| label     | 标签名                     | string                                                                   | 否       |
+| rules     | 验证规则                   | any[]                                                                    | 否       |
+| min       | 数字输入最小值             | number                                                                   | 否       |
+| max       | 数字输入最大值             | number                                                                   | 否       |
+| options   | 下拉菜单，多选参数配置数组 | Array\<options>                                                          | 否       |
+| datetype  | 时间控件类型               | string                                                                   | 否       |
+| format    | 时间控件格式               | string                                                                   | 否       |
+| maxlength | 输入框最大长度             | number                                                                   | 否       |
+| style     | 样式                       | any                                                                      | 否       |
+| multiple  | 是否多选                   | boolean                                                                  | 否       |
+| row       | textarea 行数              | number                                                                   | 否       |
 
 - options
 
-快捷配置radio,checkbox,select
+快捷配置 radio,checkbox,select
 
-|名称|说明|类型|是否必填|
-|---|---|---|---|
-|label|radio,checkbox,select|string|是|
-|value|select|string|否|
-|name|radio,checkbox|string|否|
+| 名称  | 说明                  | 类型   | 是否必填 |
+| ----- | --------------------- | ------ | -------- |
+| label | radio,checkbox,select | string | 是       |
+| value | select                | string | 否       |
+| name  | radio,checkbox        | string | 否       |
 
 ### 类型定义
 
@@ -80,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
   formData: undefined,
   formItem: undefined,
   itemStyle: {
-    width: '220px'
+    width: '220px',
   },
   inline: false,
   size: '',
@@ -90,31 +90,30 @@ const props = withDefaults(defineProps<Props>(), {
 
 ## 方法
 
-|名称|说明|传参|回调参数|
-|---|---|---|---|
-|submitForm|返回验证结果，表单数据，错误数据||{valid: boolean, data: any, fields: any}|
-|resetFields|重置表单|||
-|validateField|验证单个表单项|field: string||
-|changeValue|变更表单值|key: string, value: any||
-|setLoading|设置加载状态|state: boolean||
-
+| 名称          | 说明                             | 传参                    | 回调参数                                 |
+| ------------- | -------------------------------- | ----------------------- | ---------------------------------------- |
+| submitForm    | 返回验证结果，表单数据，错误数据 |                         | {valid: boolean, data: any, fields: any} |
+| resetFields   | 重置表单                         |                         |                                          |
+| validateField | 验证单个表单项                   | field: string           |                                          |
+| changeValue   | 变更表单值                       | key: string, value: any |                                          |
+| setLoading    | 设置加载状态                     | state: boolean          |                                          |
 
 ## 事件
 
 配合快捷按钮使用
 
-|名称|说明|
-|---|---|---|
-|submit|点击提交按钮|
-|close|点击关闭按钮|
+| 名称   | 说明         |
+| ------ | ------------ |
+| submit | 点击提交按钮 |
+| close  | 点击关闭按钮 |
 
 ## 快捷按钮
 
-通过2个特殊prop展示常用按钮组合
+通过 2 个特殊 prop 展示常用按钮组合
 
 ### 查询/重置
 
-- searchBtn 查询和重置按钮对应的外部方法submit，如加载列表
+- searchBtn 查询和重置按钮对应的外部方法 submit，如加载列表
 
 ```html
 <formModel
@@ -215,17 +214,12 @@ const formItem = reactive<any[]>([
 
 ## 插槽
 
-- 部分字段需要特殊处理，直接使用和prop同名的具名插槽即可
+- 部分字段需要特殊处理，直接使用和 prop 同名的具名插槽即可
 
 - 默认插槽为空的表单内容
 
 ```html
-<formModel
-  ref="ruleFormRef"
-  :formData="ruleForm"
-  :formItem="formItem"
-  label-width="120px"
->
+<formModel ref="ruleFormRef" :formData="ruleForm" :formItem="formItem" label-width="120px">
   <template #test>
     <el-input v-model="ruleForm.test"></el-input>
   </template>

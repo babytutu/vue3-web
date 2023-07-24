@@ -44,7 +44,6 @@ function changeSize(size: any) {
 function changeType(val: any) {
   type.value = val
 }
-
 </script>
 <style>
 .chartDom {
