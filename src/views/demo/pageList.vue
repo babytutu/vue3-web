@@ -9,16 +9,24 @@
         @submit="getList"
       >
         <el-button type="primary" @click="handleAdd">新增</el-button>
-        <el-button type="primary" :disabled="!selectRows.length" @click="handleBatchDelete">批量删除</el-button>
+        <el-button type="primary" :disabled="!selectRows.length" @click="handleBatchDelete"
+          >批量删除</el-button
+        >
       </formModel>
     </template>
-    <TableModel @selection-change="changeRows" selection :data="tableData" ref="tableRef" :header="header">
-      <template #region="{row}">
+    <TableModel
+      @selection-change="changeRows"
+      selection
+      :data="tableData"
+      ref="tableRef"
+      :header="header"
+    >
+      <template #region="{ row }">
         {{ row.region.join() }}
       </template>
-      <template #type="{row}">
+      <template #type="{ row }">
         <el-space wrap>
-          <el-tag v-for="i in row.type" :key="i">{{i}}</el-tag>
+          <el-tag v-for="i in row.type" :key="i">{{ i }}</el-tag>
         </el-space>
       </template>
     </TableModel>
@@ -35,20 +43,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onBeforeMount, onActivated, computed } from 'vue'
+import { ref, reactive, onBeforeMount, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { http } from '@/utils/http'
-import { useReloadTabsStore } from '@/stores/reloadTabs'
 import { getOptions } from '@/utils/apis'
-
-const store = useReloadTabsStore()
 
 const router = useRouter()
 
 const pageData = reactive<any>({
   page: 1,
   total: 0,
-  size: 20
+  size: 20,
 })
 
 const options = ref<any>({})
@@ -64,7 +69,7 @@ const searchForm = reactive({
   name: '',
 })
 
-const searchItem = computed<any[]>(() => ([
+const searchItem = computed<any[]>(() => [
   {
     label: '名称',
     prop: 'name',
@@ -74,18 +79,18 @@ const searchItem = computed<any[]>(() => ([
     label: '活动地区',
     prop: 'region',
     type: 'select',
-    options: options.value.region
+    options: options.value.region,
   },
   {
     label: '活动分类',
     prop: 'type',
     type: 'select',
-    options: options.value.type
+    options: options.value.type,
   },
   {
     prop: 'searchBtn',
   },
-]))
+])
 
 const header: any[] = [
   {
@@ -156,7 +161,7 @@ const getList = async () => {
     type: 'demoList',
     size: pageData.size,
     page: pageData.page,
-    search: data
+    search: data,
   })
     .then((res) => {
       tableData.value = res.result || []
@@ -237,11 +242,5 @@ const handleBatchDelete = () => {
 onBeforeMount(async () => {
   options.value = await getOptions()
   getList()
-})
-
-onActivated(() => {
-  store.checkReload('pageList', () => {
-    getList()
-  })
 })
 </script>

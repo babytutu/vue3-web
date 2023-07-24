@@ -4,14 +4,14 @@
 
 ## 参数
 
-|名称|说明|类型|是否必填|
-|---|---|---|---|
-|total|总条数|number|是|
-|pageSizes|每页显示个数选择器的选项设置|Array\<number>|否|
-|layout|组件布局|string|否|
-|small|是否使用小型分页样式|boolean|否|
-|background|背景|boolean|否|
-|defaultPageSize|每页默认条数|number|否|
+| 名称            | 说明                         | 类型           | 是否必填 |
+| --------------- | ---------------------------- | -------------- | -------- |
+| total           | 总条数                       | number         | 是       |
+| pageSizes       | 每页显示个数选择器的选项设置 | Array\<number> | 否       |
+| layout          | 组件布局                     | string         | 否       |
+| small           | 是否使用小型分页样式         | boolean        | 否       |
+| background      | 背景                         | boolean        | 否       |
+| defaultPageSize | 每页默认条数                 | number         | 否       |
 
 ### 类型定义
 
@@ -37,10 +37,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 ## 事件
 
-|名称|说明|回调参数|
-|---|---|---|
-|size-change|每页条数变更|条数|
-|current-change|当前页变更|当前页|
+| 名称           | 说明         | 回调参数 |
+| -------------- | ------------ | -------- |
+| size-change    | 每页条数变更 | 条数     |
+| current-change | 当前页变更   | 当前页   |
 
 ## 示例
 

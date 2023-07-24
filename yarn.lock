@@ -4757,10 +4757,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tui-vue-log@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "tui-vue-log@npm:0.0.3"
-  checksum: 3eba5dde8d91d3fabed4b3a0ffcca1c174e00715bf4e8c390e1f6141fec072a2e37ff70ea4c915ccb118bc4f528085218a9d8f08e81d952739ad33cd61e40b37
+"tui-vue-log@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "tui-vue-log@npm:0.0.4"
+  checksum: 2a3cc511ca7ffd8fdd41ff33ac99193a13d155d72d32a5df7a2e73e4099ac7139c43c71ba34b6d1e4af0be57ba0f5a9fb61970a656abc700373da80433809a44
   languageName: node
   linkType: hard
 
@@ -5166,7 +5166,7 @@ __metadata:
     pinia: ^2.1.3
     prettier: ^2.8.8
     stylus: ^0.59.0
-    tui-vue-log: ^0.0.3
+    tui-vue-log: ^0.0.4
     typescript: ~5.0.4
     unplugin-auto-import: ^0.16.4
     unplugin-vue-components: ^0.25.1

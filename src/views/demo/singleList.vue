@@ -12,7 +12,11 @@
       </formModel>
     </template>
     <TableModel :data="tableData" ref="tableRef" :header="header"> </TableModel>
-    <infoDialog @submit="getList" v-model="dialogFormVisible" :typeOptions="typeOptions"></infoDialog>
+    <infoDialog
+      @submit="getList"
+      v-model="dialogFormVisible"
+      :typeOptions="typeOptions"
+    ></infoDialog>
   </Layout>
 </template>
 

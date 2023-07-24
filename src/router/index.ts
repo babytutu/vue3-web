@@ -20,6 +20,7 @@ const router = createRouter({
           meta: {
             title: '首页',
             closable: false,
+            keepAlive: false,
           },
         },
         ...DemoRoute,

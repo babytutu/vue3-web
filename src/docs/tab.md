@@ -1,38 +1,24 @@
-# 多页签方法
+# 路由多页签
 
-使用provide和inject实现方法复用
+使用 provide 和 inject 实现方法复用
 
-- 新增页签 addTab
-- 删除页签 removeTab
+## 路由配置
 
-## 使用示例
+- title 页面名称
+- closable 可关闭页签
+- keepAlive 开启缓存
 
-```vue
-<template>
-  <el-button @click="addTabByPath">新增页签</el-button>
-  <el-button @click="removeTab($route.path)">删除页签</el-button>
-</template>
-<script lang="ts" setup>
-import { inject } from 'vue'
-
-const addTab: any = inject('addTab')
-const removeTab: any = inject('removeTab')
-
-const addTabByPath = () => {
-  addTab({
-    title: '分页列表',
-    path: '/pageList',
-    closable: true, // 可选
-  })
+```js
+{
+  meta: {
+    title: '首页',
+    closable: false,
+    keepAlive: false,
+  },
 }
-</script>
 ```
 
-## 参数说明
-
-### addTab(tabType)
-
-- tabType，对象
+## Methods
 
 ```ts
 export interface tabType {
@@ -42,90 +28,82 @@ export interface tabType {
 }
 ```
 
-### removeTab(path)
+| 名称       | 描述     | 参数    | 参数类型 |
+| ---------- | -------- | ------- | -------- |
+| addTab     | 新增页签 | tabType | tabType  |
+| removeTab  | 删除页签 | path    | string   |
+| reloadTab  | 刷新页签 | path    | string   |
+| replaceTab | 替换页签 | path    | string   |
 
-- path，字符串
+## 使用示例
+
+```vue
+<template>
+  <el-button @click="addTabByPath">打开新页签</el-button>
+  <el-button @click="removeTab($route.path)">删除页签</el-button>
+  <el-button @click="reloadTab($route.path)">刷新页签</el-button>
+  <el-button @click="closeToTab">替换页签</el-button>
+</template>
+<script lang="ts" setup>
+import { inject } from 'vue'
+
+const addTab = inject('addTab') as Function
+const removeTab = inject('removeTab') as Function
+const reloadTab = inject('reloadTab') as Function
+const replaceTab = inject('replaceTab') as Function
+
+const addTabByPath = () => {
+  addTab({
+    title: '分页列表',
+    path: '/pageList',
+  })
+}
+
+const closeToTab = () => {
+  replaceTab({
+    title: '分页列表',
+    path: '/pageList',
+  })
+}
+</script>
+```
 
 ## keepAlive
 
-vue官方组件，支持3个参数
+vue 官方组件，未在生产环境开放清除缓存方法，需要修改源码实现
 
-- includes
-- excludes
-- max
-
-设置包含`List`的组件缓存，最多缓存3个
-
-```html
-<router-view v-slot="{ Component, route }">
-  <!--https://cn.vuejs.org/guide/built-ins/keep-alive.html-->
-  <keep-alive :max="3" :include="/List/">
-    <component :is="Component" :key="route.path" />
-  </keep-alive>
-</router-view>
-```
-
-## 缓存路由自动更新
-
-通过pinia维护需要刷新的路由，onActivated时进行验证并执行对应方法
-
-### 方法定义
-
-reloadTabs.ts
-
-```ts
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-
-// 缓存需要刷新的tab集合
-export const useReloadTabsStore = defineStore('reloadTabs', () => {
-  const reloadList = ref<string[]>([])
-
-  // 新增需要刷新的tab
-  function addReloadTab(path: string) {
-    if (!reloadList.value.includes(path)) {
-      reloadList.value.push(path)
-    }
-  }
-
-  // 删除需要刷新的tab
-  function removeReloadTab(path: string) {
-    reloadList.value = reloadList.value.filter((i: string) => i !== path)
-  }
-
-  // 验证是否存在需要刷新的tab
-  function checkReload(path: string, callback: any) {
-    if (reloadList.value.includes(path)) {
-      removeReloadTab(path)
-      callback && callback()
-    }
-  }
-
-  return { reloadList, addReloadTab, removeReloadTab, checkReload }
-})
-
-```
-
-### 增加刷新页签
+build/replace-vue.js
 
 ```js
-import { useReloadTabsStore } from '@/stores/reloadTabs'
-
-const store = useReloadTabsStore()
-
-store.addReloadTab('pageList')
-```
-
-### 页面onActivated时验证
-
-```js
-import { useReloadTabsStore } from '@/stores/reloadTabs'
-
-const store = useReloadTabsStore()
-
-onActivated(() => {
-  store.removeReloadTab('pageList', () => {
-    getList()
+const fs = require('fs')
+const path = require('path')
+const vue_bundler_file = path.resolve(
+  __dirname,
+  '../node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js'
+)
+fs.readFile(vue_bundler_file, 'utf8', function (err, data) {
+  if (err) console.error(err)
+  let orginal_str = `if (!!(process.env.NODE_ENV !== "production") || __VUE_PROD_DEVTOOLS__) {
+      instance.__v_cache = cache;
+    }`
+  let target_str = `//if (!!(process.env.NODE_ENV !== "production") || __VUE_PROD_DEVTOOLS__) {
+      instance.__v_cache = cache;
+    //}`
+  const result = data.replace(orginal_str, target_str)
+  fs.writeFile(vue_bundler_file, result, 'utf8', function (err) {
+    if (err) return console.error(err)
   })
 })
+```
+
+打包命令新增前置步骤`node build/replace-vue.js`
+
+package.json
+
+```json
+{
+  "script": {
+    "build": "node build/replace-vue.js && run-p type-check build-only"
+  }
+}
 ```

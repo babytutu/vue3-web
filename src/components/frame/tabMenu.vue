@@ -28,12 +28,9 @@
       :visible="visible"
     >
       <ul>
-        <li>
-          <el-link :underline="false" @click="closeOtherTabs">关闭其他</el-link>
-        </li>
-        <li>
-          <el-link :underline="false" @click="closeAllTabs">关闭所有</el-link>
-        </li>
+        <li @click="emit('reloadTab', clickMenu)">刷新页面</li>
+        <li @click="closeOtherTabs">关闭其他</li>
+        <li @click="closeAllTabs">关闭所有</li>
       </ul>
     </el-popover>
   </el-tabs>
@@ -64,6 +61,8 @@ const props = withDefaults(defineProps<Props>(), {
   }),
 })
 
+const emit = defineEmits(['reloadTab', 'delCache'])
+
 const panes = ref<Array<tabType>>([props.homeTab])
 
 const activeKey = ref(panes.value[0].path)
@@ -88,6 +87,8 @@ const removeTab = (targetKey: any) => {
     const nextTab = tabs[index + 1] || tabs[index - 1] || tabs[0]
     activeKey.value = nextTab.path
   }
+  // 清除keepAlive缓存
+  emit('delCache', targetKey)
   panes.value = panes.value.filter((pane) => pane.path !== targetKey)
 }
 
@@ -189,8 +190,10 @@ watch(
     padding 0
     line-height 40px
     text-align center
-    li {
-      border-bottom 1px solid #EBEEF5
+    cursor pointer
+    li:hover {
+      color: #409eff
+      background-color: #ecf5ff
     }
   }
 }

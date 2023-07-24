@@ -43,11 +43,11 @@ app.use(tool, {
 })
 ```
 
-## 在TypeScript中使用
+## 在 TypeScript 中使用
 
 [需要做类型定义](https://cn.vuejs.org/guide/typescript/options-api.html#augmenting-global-properties)
 
-*.d.ts
+\*.d.ts
 
 ```ts
 export {}
@@ -62,13 +62,13 @@ declare module 'vue' {
 
 ## 在组件中使用
 
-### 在html中可直接使用
+### 在 html 中可直接使用
 
 ```html
 <div>{{msg}} {{$translate('home.title')}}</div>
 ```
 
-### 在ts中使用
+### 在 ts 中使用
 
 - 增加引用的模块定义
 
@@ -84,11 +84,11 @@ export default () =>
   (getCurrentInstance() as ComponentInternalInstance).proxy as ComponentPublicInstance
 ```
 
-- 在ts中使用
+- 在 ts 中使用
 
 ```vue
 <template>
-  <div>{{message}}{{title}}</div>
+  <div>{{ message }}{{ title }}</div>
 </template>
 <script lang="ts" setup>
 import useProxy from '@/utils/useProxy'

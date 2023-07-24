@@ -14,7 +14,6 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-
 export interface Props {
   modelValue: boolean
   title?: string

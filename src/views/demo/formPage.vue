@@ -20,19 +20,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, reactive, ref, computed } from 'vue'
+import { onBeforeMount, reactive, ref, computed, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import type { formType } from '@/components/model/formModel.vue'
 import { http } from '@/utils/http'
 import { getOptions } from '@/utils/apis'
 
-import { useReloadTabsStore } from '@/stores/reloadTabs'
-
-import { inject } from 'vue'
-
 const removeTab: any = inject('removeTab')
-
-const store = useReloadTabsStore()
+const reloadTab: any = inject('reloadTab')
 
 const route = useRoute()
 const id: any = route.params.id
@@ -160,7 +155,7 @@ const submitForm = async () => {
 }
 
 const leavePage = () => {
-  store.addReloadTab('pageList')
+  reloadTab('/pageList')
   removeTab(route.path)
 }
 

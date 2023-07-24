@@ -66,7 +66,6 @@ echarts.use([
 export default {
   echarts,
 }
-
 ```
 
 ## 组件
@@ -137,7 +136,7 @@ defineExpose({ resize })
 ## 示例
 
 - 定义容器样式
-- 通过参数options调整配置参数，changeType
+- 通过参数 options 调整配置参数，changeType
 - 通过调整容器高度实现重新渲染，changeSize
 
 ```vue
@@ -187,12 +186,10 @@ function changeSize(size: string) {
 function changeType(val: string) {
   type.value = val
 }
-
 </script>
 <style>
 .chartDom {
   width: 100%;
 }
 </style>
-
 ```
