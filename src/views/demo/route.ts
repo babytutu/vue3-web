@@ -56,4 +56,12 @@ export const route: any[] = [
       keepAlive: false,
     },
   },
+  {
+    path: '/docs',
+    name: 'docs',
+    component: () => import('@/views/demo/markdowm.vue'),
+    meta: {
+      title: 'docs',
+    },
+  },
 ]

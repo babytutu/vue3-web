@@ -6,6 +6,9 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
+import Markdown from 'vite-plugin-vue-markdown'
+import prism from 'markdown-it-prism'
+
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -23,7 +26,19 @@ try {
 export default defineConfig({
   base: './',
   plugins: [
-    vue(),
+    vue({
+      include: [/\.vue$/, /\.md$/],
+    }),
+    Markdown({
+      // default options passed to markdown-it
+      // see: https://markdown-it.github.io/markdown-it/
+      markdownItOptions: {
+        html: true,
+        linkify: true,
+        typographer: true,
+      },
+      markdownItUses: [prism],
+    }),
     vueJsx(),
     AutoImport({
       resolvers: [ElementPlusResolver()],

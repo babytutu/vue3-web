@@ -31,4 +31,9 @@ export const menuList: any = [
       },
     ],
   },
+  {
+    title: '文档',
+    icon: 'Notebook',
+    path: '/docs',
+  },
 ]
