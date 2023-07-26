@@ -46,13 +46,31 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    /**
+     * @see https://github.com/vbenjs/vite-plugin-html
+     */
     createHtmlPlugin({
-      inject: {
-        data: {
-          version,
-          buildTime: new Date().toLocaleString(),
+      minify: true,
+      pages: [
+        {
+          /**
+           * 在这里写entry后，你将不需要在`index.html`内添加 script 标签，原有标签需要删除
+           * @default src/main.ts
+           */
+          entry: 'src/main.ts',
+          filename: 'index.html',
+          template: 'index.html',
+          /**
+           * 需要注入 index.html ejs 模版的数据
+           */
+          injectOptions: {
+            data: {
+              version,
+              buildTime: new Date().toLocaleString(),
+            },
+          },
         },
-      },
+      ],
     }),
   ],
   resolve: {
@@ -69,6 +87,9 @@ export default defineConfig({
           }
           if (id.includes('element')) {
             return 'element'
+          }
+          if (id.includes('/docs')) {
+            return 'docs'
           }
           if (id.includes('echarts')) {
             return 'echarts'

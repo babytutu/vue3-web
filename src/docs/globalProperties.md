@@ -86,7 +86,7 @@ export default () =>
 
 - 在 ts 中使用
 
-```vue
+```html
 <template>
   <div>{{ message }}{{ title }}</div>
 </template>
