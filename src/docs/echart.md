@@ -74,7 +74,7 @@ export default {
 
 echartModel.vue
 
-```vue
+```html
 <template>
   <div class="chartDomStyle" ref="chartDom"></div>
 </template>
@@ -139,7 +139,7 @@ defineExpose({ resize })
 - 通过参数 options 调整配置参数，changeType
 - 通过调整容器高度实现重新渲染，changeSize
 
-```vue
+```html
 <template>
   <el-radio-group v-model="height" @change="changeSize">
     <el-radio-button label="300px" />

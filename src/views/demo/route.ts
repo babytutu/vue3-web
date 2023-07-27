@@ -5,6 +5,7 @@ export const route: any[] = [
     component: () => import('@/views/demo/singleList.vue'),
     meta: {
       title: '简单列表',
+      auth: 'singleList',
     },
   },
   {
@@ -13,6 +14,7 @@ export const route: any[] = [
     component: () => import('@/views/demo/pageList.vue'),
     meta: {
       title: '分页列表',
+      auth: 'pageList',
     },
   },
   {
@@ -54,6 +56,14 @@ export const route: any[] = [
     meta: {
       title: 'echart',
       keepAlive: false,
+    },
+  },
+  {
+    path: '/docs',
+    name: 'docs',
+    component: () => import('@/views/demo/md.vue'),
+    meta: {
+      title: 'docs',
     },
   },
 ]

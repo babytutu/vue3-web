@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { http } from '@/utils/http'
+import { getItem, type Res } from '@/utils/apis'
 import { inject } from 'vue'
 
 const replaceTab = inject('replaceTab') as Function
@@ -22,9 +22,8 @@ const removeTab = inject('removeTab') as Function
 const reloadTab = inject('reloadTab') as Function
 
 const route = useRoute()
-const id = route.params.id
 
-const info: any = ref({})
+const info = ref<Res>({})
 const loading = ref(true)
 
 const addTabByPath = () => {
@@ -35,17 +34,9 @@ const addTabByPath = () => {
   })
 }
 
-onMounted(() => {
-  http('https://5ykenqzacs.hk.aircode.run/getItem', {
-    type: 'demoList',
-    id,
-  })
-    .then((res: any) => {
-      info.value = res.result
-      loading.value = false
-    })
-    .catch(() => {
-      loading.value = false
-    })
+onMounted(async () => {
+  const result = await getItem(route.params.id as string)
+  info.value = result
+  loading.value = false
 })
 </script>

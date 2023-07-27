@@ -109,31 +109,21 @@ import { ref, reactive } from 'vue'
 
 const ruleFormRef = ref<any>()
 
-interface options {
+interface Options {
   label: string
   value?: any
   name?: string
 }
 
-export interface formType {
+export interface FormType {
   prop: string
-  type?: 'input' | 'input-number' | 'select' | 'date' | 'switch' | 'checkbox' | 'radio' | 'textarea'
-  dateType?:
-    | 'date'
-    | 'year'
-    | 'month'
-    | 'dates'
-    | 'week'
-    | 'datetime'
-    | 'datetimerange'
-    | 'daterange'
-    | 'monthrange'
+  type?: 'input' | 'input-number' | 'select' | 'date' | 'switch' | 'checkbox' | 'radio' | 'textarea' | string
+  dateType?: 'year' | 'month' | 'date' | 'dates' | 'week' | 'datetime' | 'datetimerange' | 'daterange' | 'monthrange' | any
   label?: string
   rules?: any[]
   min?: number
   max?: number
-  options?: Array<options>
-  datetype?: string
+  options?: Array<Options>
   format?: string
   maxlength?: number
   style?: any
@@ -141,9 +131,13 @@ export interface formType {
   row?: number
 }
 
+interface FormData {
+  [key: string]: any
+}
+
 export interface Props {
-  formData: any
-  formItem: Array<formType>
+  formData: FormData
+  formItem: FormType[]
   itemStyle?: any
   inline?: boolean
   size?: '' | 'default' | 'large' | 'small'

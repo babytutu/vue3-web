@@ -8,10 +8,14 @@
         :formItem="searchItem"
         @submit="getList"
       >
-        <el-button type="primary" @click="handleAdd">新增</el-button>
-        <el-button type="primary" :disabled="!selectRows.length" @click="handleBatchDelete"
-          >批量删除</el-button
-        >
+        <auth type="add">
+          <el-button type="primary" @click="handleAdd">新增</el-button>
+        </auth>
+        <auth type="del">
+          <el-button type="primary" :disabled="!selectRows.length" @click="handleBatchDelete"
+            >批量删除</el-button
+          >
+        </auth>
       </formModel>
     </template>
     <TableModel
@@ -46,20 +50,23 @@
 import { ref, reactive, onBeforeMount, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { http } from '@/utils/http'
-import { getOptions } from '@/utils/apis'
+import { getOptions, type Res } from '@/utils/apis'
+import { useAuthStore } from '@/stores/auth'
+
+const { checkAuth } = useAuthStore()
 
 const router = useRouter()
 
-const pageData = reactive<any>({
+const pageData = reactive<Res>({
   page: 1,
   total: 0,
   size: 20,
 })
 
-const options = ref<any>({})
+const options = ref<Res>({})
 
-const tableData = ref<Array<any>>([])
-const selectRows = ref<Array<any>>([])
+const tableData = ref<Array<Res>>([])
+const selectRows = ref<Array<Res>>([])
 
 const tableRef = ref()
 const searchFormRef = ref()
@@ -69,7 +76,7 @@ const searchForm = reactive({
   name: '',
 })
 
-const searchItem = computed<any[]>(() => [
+const searchItem = computed(() => [
   {
     label: '名称',
     prop: 'name',
@@ -92,7 +99,7 @@ const searchItem = computed<any[]>(() => [
   },
 ])
 
-const header: any[] = [
+const header = [
   {
     prop: 'name',
     label: '活动名称',
@@ -124,19 +131,23 @@ const header: any[] = [
     options: [
       {
         name: '查看',
-        onClick: (row: any) => handleDetail(row),
+        onClick: (row: Res) => handleDetail(row),
+        auth: checkAuth('pageList', 'view')
       },
       {
         name: '编辑',
-        onClick: (row: any) => handleEdit(row),
+        onClick: (row: Res) => handleEdit(row),
+        auth: checkAuth('pageList', 'edit')
       },
       {
         name: '复制',
-        onClick: (row: any) => handleCopy(row),
+        onClick: (row: Res) => handleCopy(row),
+        auth: checkAuth('pageList', 'copy')
       },
       {
         name: '删除',
-        onClick: (row: any) => handleDelete(row),
+        onClick: (row: Res) => handleDelete(row),
+        auth: checkAuth('pageList', 'del')
       },
     ],
   },
@@ -181,19 +192,19 @@ const handleAdd = () => {
   router.push('/addForm')
 }
 
-const handleDetail = (item: any) => {
+const handleDetail = (item: Res) => {
   router.push(`/detailInfo/${item._id}`)
 }
 
-const handleEdit = (item: any) => {
+const handleEdit = (item: Res) => {
   router.push(`/editForm/${item._id}`)
 }
 
-const handleCopy = (item: any) => {
+const handleCopy = (item: Res) => {
   router.push(`/copyForm/${item._id}`)
 }
 
-const handleDelete = (item: any) => {
+const handleDelete = (item: Res) => {
   ElMessageBox.alert(`确定删除${item.name}`, '删除', {
     confirmButtonText: 'OK',
     callback: (action: string) => {
@@ -214,7 +225,7 @@ const handleDelete = (item: any) => {
   })
 }
 
-const changeRows = (rows: any[]) => {
+const changeRows = (rows: Res[]) => {
   selectRows.value = rows
 }
 
@@ -225,7 +236,7 @@ const handleBatchDelete = () => {
       if (action === 'confirm') {
         http('https://5ykenqzacs.hk.aircode.run/removeItems', {
           type: 'demoList',
-          ids: selectRows.value.map((i: any) => i._id),
+          ids: selectRows.value.map((i: Res) => i._id),
         }).then(({ success }) => {
           if (success) {
             ElMessage.success('删除成功')

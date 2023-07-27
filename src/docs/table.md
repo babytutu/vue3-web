@@ -29,28 +29,34 @@
 | ------- | ------------- | ------ | -------- |
 | name    | 按钮文案      | string | 是       |
 | onClick | function(row) | string | 是       |
+| auth | 权限验证参数 | boolean | 否 |
 
 ### 类型定义
 
 ```ts
-interface options {
-  name: string
-  onClick: any
+interface DataType {
+  [key: string]: any
 }
 
-interface headerType {
+interface Options {
+  name: string
+  onClick(item: DataType): void
+  auth?: boolean
+}
+
+interface HeaderType {
   prop: string
   label: string
   fixed?: boolean | string
   sortable?: boolean | string
   width?: string
-  options?: Array<options>
+  options?: Array<Options>
 }
 
 defineProps({
-  data: Array<any>,
+  data: Array<DataType>,
   header: {
-    type: Array<headerType>,
+    type: Array<HeaderType>,
     required: true,
   },
   selection: {

@@ -20,26 +20,26 @@
       </el-form>
     </el-card>
     <template #footer>
-      <div class="version">vue3-web-demo {{ version?.content }} {{ buildTime?.content }}</div>
+      <div class="version">vue3-web-demo {{ version }} {{ buildTime }}</div>
     </template>
   </Layout>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, computed } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const loginInfo = ref<any>({
+const loginInfo = ref({
   username: '',
   password: '',
 })
 
 const log = inject('log') as Function
 
-const version: any = computed(() => document.querySelector('meta[name="version"]'))
-const buildTime: any = computed(() => document.querySelector('meta[name="buildTime"]'))
+const version = document.querySelector('meta[name="version"]')?.getAttribute('content')
+const buildTime = document.querySelector('meta[name="buildTime"]')?.getAttribute('content')
 
 const loading = ref(false)
 
@@ -54,8 +54,8 @@ const onSubmit = () => {
 }
 
 onMounted(() => {
-  log('version', version.value?.content)
-  log('buildTime', buildTime.value?.content)
+  log('version', version)
+  log('buildTime', buildTime)
 })
 </script>
 <style lang="stylus" scoped>
