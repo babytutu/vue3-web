@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, provide, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import type { tabType } from '@/components/frame/tabMenu.vue'
+import type { TabType } from '@/components/frame/tabMenu.vue'
 
 const tabMenuRef = ref()
 const isRouterAlive = ref(true)
@@ -66,7 +66,7 @@ function reloadTab(path: string): void {
  * 打开新页签
  * @param tabInfo
  */
-function addTab(tabInfo: tabType): void {
+function addTab(tabInfo: TabType): void {
   tabMenuRef.value?.addTab(tabInfo)
 }
 
@@ -78,7 +78,7 @@ function removeTab(path: string): void {
   tabMenuRef.value?.removeTab(path)
 }
 
-function replaceTab(tabInfo: tabType): void {
+function replaceTab(tabInfo: TabType): void {
   tabMenuRef.value?.removeTab(route.path)
   tabMenuRef.value?.addTab(tabInfo)
 }

@@ -4,6 +4,7 @@ declare module 'vue-router' {
     closable?: boolean = true
     keepAlive?: boolean = true
     title: string
+    auth?: string
   }
 }
 

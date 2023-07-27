@@ -21,7 +21,7 @@
 ## Methods
 
 ```ts
-export interface tabType {
+export interface TabType {
   title: string
   path: string
   closable?: boolean
@@ -30,7 +30,7 @@ export interface tabType {
 
 | 名称       | 描述     | 参数    | 参数类型 |
 | ---------- | -------- | ------- | -------- |
-| addTab     | 新增页签 | tabType | tabType  |
+| addTab     | 新增页签 | tabType | TabType  |
 | removeTab  | 删除页签 | path    | string   |
 | reloadTab  | 刷新页签 | path    | string   |
 | replaceTab | 替换页签 | path    | string   |

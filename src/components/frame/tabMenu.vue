@@ -14,7 +14,10 @@
       :closable="pane.closable !== false"
     >
       <template #label>
-        <div @contextmenu="(e: any) => contextmenu(e, pane.path)" v-click-outside="closeMenu">
+        <div
+          @contextmenu="(e: MouseEvent) => contextmenu(e, pane.path)"
+          v-click-outside="closeMenu"
+        >
           {{ pane.title }}
         </div>
       </template>
@@ -39,9 +42,10 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { type TabPaneName } from 'element-plus'
 
 // Tab
-export interface tabType {
+export interface TabType {
   title: string
   path: string
   closable?: boolean
@@ -50,7 +54,7 @@ export interface tabType {
 const router = useRouter()
 
 export interface Props {
-  homeTab?: tabType
+  homeTab?: TabType
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -63,12 +67,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['reloadTab', 'delCache'])
 
-const panes = ref<Array<tabType>>([props.homeTab])
+const panes = ref<Array<TabType>>([props.homeTab])
 
 const activeKey = ref(panes.value[0].path)
 
 // 添加tab页签，选中侧边栏菜单项时调用
-const addTab = (paneObj: tabType) => {
+const addTab = (paneObj: TabType) => {
   let oneTab = panes.value.find((i) => i.path === paneObj.path)
   if (!oneTab) {
     // 页签不存在，创建页签
@@ -79,7 +83,7 @@ const addTab = (paneObj: tabType) => {
 }
 
 // 关闭页签函数
-const removeTab = (targetKey: any) => {
+const removeTab = (targetKey: TabPaneName) => {
   const tabs = panes.value
   // 如关闭高亮页签，找到最近一次激活的页签并激活
   if (activeKey.value === targetKey) {
@@ -113,7 +117,7 @@ const vClickOutside = {
 }
 
 // 打开右键菜单
-const contextmenu = (e: any, path: string) => {
+const contextmenu = (e: MouseEvent, path: string) => {
   e.preventDefault()
   buttonRef.value = e.currentTarget
   visible.value = true
@@ -142,8 +146,8 @@ const closeMenu = () => {
 }
 
 // 页签变更时触发
-const changeTab = (activeKeyId: any) => {
-  let oneTab = panes.value.find((i: tabType) => i.path === activeKeyId)
+const changeTab = (activeKeyId: TabPaneName) => {
+  let oneTab = panes.value.find((i: TabType) => i.path === activeKeyId)
   // 路由不相同触发页面跳转
   if (oneTab && router.currentRoute.value.path !== oneTab.path) {
     router.push(oneTab.path)

@@ -5,7 +5,9 @@ export async function http(url: string, body?: any): Promise<any> {
     headers: {
       'content-type': 'application/json; charset=utf-8',
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch((e) => {})
 }
 
 export async function get(url: string): Promise<any> {
@@ -14,5 +16,7 @@ export async function get(url: string): Promise<any> {
     headers: {
       'content-type': 'application/json; charset=utf-8',
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch((e) => {})
 }

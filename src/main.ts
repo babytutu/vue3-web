@@ -15,6 +15,9 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import tool from '@/utils/tool'
 import log from 'tui-vue-log'
 
+import { getAuth } from '@/utils/apis'
+import { useAuthStore } from '@/stores/auth'
+
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -51,7 +54,7 @@ NProgress.configure({
 
 sessionStorage.setItem('reload', '1')
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
   const isLogin = sessionStorage.getItem('login') === '1'
@@ -63,6 +66,15 @@ router.beforeEach((to, from, next) => {
   if (isReload && isLogin) {
     next('/home')
   } else if (isLogin || isLoging) {
+    const { setAuth, removeAuth } = useAuthStore()
+    if (to.meta.auth) {
+      const rulePath = to.meta.auth
+      const authList = await getAuth(rulePath)
+      setAuth(rulePath, authList)
+    }
+    if (from.meta.auth) {
+      removeAuth(from.meta.auth)
+    }
     next()
   } else {
     next('/login')

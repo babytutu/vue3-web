@@ -22,7 +22,7 @@
         <slot :name="i.prop" :row="row">
           <template v-if="i.prop === 'action'">
             <el-button
-              v-for="item in i.options"
+              v-for="item in i.options?.filter((i: Options) => i.auth !== false)"
               :key="item.name"
               link
               type="primary"
@@ -45,24 +45,29 @@ const loading = ref(false)
 
 const tableModelRef = ref()
 
-interface options {
-  name: string
-  onClick: any
+interface DataType {
+  [key: string]: any
 }
 
-interface headerType {
+interface Options {
+  name: string
+  onClick(item: DataType): void
+  auth?: boolean
+}
+
+export interface HeaderType {
   prop: string
   label: string
   fixed?: boolean | string
   sortable?: boolean | string
   width?: string
-  options?: Array<options>
+  options?: Array<Options>
 }
 
 defineProps({
-  data: Array<any>,
+  data: Array<DataType>,
   header: {
-    type: Array<headerType>,
+    type: Array<HeaderType>,
     required: true,
   },
   selection: {
@@ -74,7 +79,7 @@ function setLoading(state: boolean) {
   loading.value = state
 }
 
-function selectionChange(rows: any[]) {
+function selectionChange(rows: DataType[]) {
   emit('selection-change', rows)
 }
 

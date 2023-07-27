@@ -27,7 +27,7 @@ const form = reactive({
   type: 'type',
 })
 
-const formItem = reactive<any[]>([
+const formItem = reactive([
   {
     label: '类型',
     prop: 'type',

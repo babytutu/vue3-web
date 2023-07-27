@@ -8,7 +8,9 @@
         :formItem="searchItem"
         @submit="getList"
       >
-        <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
+        <auth type="add">
+          <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
+        </auth>
       </formModel>
     </template>
     <TableModel :data="tableData" ref="tableRef" :header="header"> </TableModel>
@@ -24,11 +26,14 @@
 import { reactive, ref, onMounted } from 'vue'
 import { http } from '@/utils/http'
 import infoDialog from './infoDialog.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const { checkAuth } = useAuthStore()
 
 const tableData = ref<Array<any>>([])
 const tableRef = ref()
 
-const header: any[] = [
+const header = [
   {
     prop: 'type',
     label: '类型',
@@ -54,6 +59,7 @@ const header: any[] = [
       {
         name: '删除',
         onClick: (row: any) => handleDelete(row),
+        auth: checkAuth('singleList', 'del')
       },
     ],
   },
@@ -67,7 +73,7 @@ const searchForm = reactive({
   label: '',
 })
 
-const typeOptions: any[] = [
+const typeOptions = [
   {
     label: '活动类型',
     value: 'type',
@@ -82,7 +88,7 @@ const typeOptions: any[] = [
   },
 ]
 
-const searchItem = reactive<any[]>([
+const searchItem = reactive([
   {
     label: '类型',
     prop: 'type',

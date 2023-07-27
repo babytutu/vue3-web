@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Auth: typeof import('./src/components/model/auth.vue')['default']
     DialogModel: typeof import('./src/components/model/dialogModel.vue')['default']
     EchartModel: typeof import('./src/components/model/echartModel.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

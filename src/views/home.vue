@@ -13,7 +13,7 @@ const proxy = useProxy()
 
 const title = ref(proxy.$translate('home.title'))
 
-const apiList: any[] = [
+const apiList = [
   {
     label: '全局样式',
     content: 'src/assets/main.css',

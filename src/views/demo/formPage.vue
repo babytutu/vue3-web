@@ -22,22 +22,21 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive, ref, computed, inject } from 'vue'
 import { useRoute } from 'vue-router'
-import type { formType } from '@/components/model/formModel.vue'
 import { http } from '@/utils/http'
-import { getOptions } from '@/utils/apis'
+import { getOptions, type Res } from '@/utils/apis'
 
-const removeTab: any = inject('removeTab')
-const reloadTab: any = inject('reloadTab')
+const removeTab = inject('removeTab') as Function
+const reloadTab = inject('reloadTab') as Function
 
 const route = useRoute()
-const id: any = route.params.id
-const copyId: any = route.params.copyId
+const id = route.params.id as string
+const copyId = route.params.copyId as string
 
 const loading = ref(true)
 
-const ruleFormRef = ref<any>()
+const ruleFormRef = ref()
 
-const ruleForm = reactive<any>({
+const ruleForm = reactive<Res>({
   name: '',
   num: 1,
   region: ['上海'],
@@ -49,9 +48,9 @@ const ruleForm = reactive<any>({
   test: 'abc',
 })
 
-const options = ref<any>({})
+const options = ref<Res>({})
 
-const formItem = computed<formType[]>(() => [
+const formItem = computed(() => [
   {
     label: '活动名称',
     prop: 'name',
