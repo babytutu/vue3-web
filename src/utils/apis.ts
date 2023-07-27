@@ -27,7 +27,7 @@ export const getOptions = async (): Promise<Res> => {
   return options
 }
 
-export const getAuth = async (path: string): Promise<Res> => {
+export const getAuth = async (path: string): Promise<string> => {
   const {
     result: [auth],
   } = await http('https://5ykenqzacs.hk.aircode.run/getAllList', {
