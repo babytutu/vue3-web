@@ -1,4 +1,4 @@
-export const menuList: any = [
+export const menuList = [
   {
     title: '首页',
     path: '/home',

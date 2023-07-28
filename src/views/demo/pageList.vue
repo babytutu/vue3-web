@@ -6,7 +6,7 @@
         ref="searchFormRef"
         :formData="searchForm"
         :formItem="searchItem"
-        @submit="getList"
+        @submit="getListData"
       >
         <auth type="add">
           <el-button type="primary" @click="handleAdd">新增</el-button>
@@ -49,7 +49,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onBeforeMount, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { http } from '@/utils/http'
+import { removeItem, getList, removeItems } from '@/utils/apis'
 import { getOptions, type Res } from '@/utils/apis'
 import { useAuthStore } from '@/stores/auth'
 
@@ -156,36 +156,35 @@ const header = [
 const handleSizeChange = (val: number) => {
   pageData.size = val
   pageData.page = 1
-  getList()
+  getListData()
 }
 
 const handleCurrentChange = (val: number) => {
   pageData.page = val
-  getList()
+  getListData()
 }
 
-const getList = async () => {
+const getListData = async () => {
   const { data } = await searchFormRef.value?.submitForm()
   tableRef.value?.setLoading(true)
   searchFormRef.value?.setLoading(true)
-  http(`https://5ykenqzacs.hk.aircode.run/getList`, {
+  const res = await getList({
     type: 'demoList',
     size: pageData.size,
     page: pageData.page,
     search: data,
   })
-    .then((res) => {
-      tableData.value = res.result || []
-      pageData.total = res.total || 0
-      tableRef.value?.setLoading(false)
-      searchFormRef.value?.setLoading(false)
-    })
-    .catch(() => {
-      tableData.value = []
-      pageData.total = 0
-      tableRef.value?.setLoading(false)
-      searchFormRef.value?.setLoading(false)
-    })
+  if (res.success) {
+    tableData.value = res.result || []
+    pageData.total = res.total || 0
+    tableRef.value?.setLoading(false)
+    searchFormRef.value?.setLoading(false)
+  } else {
+    tableData.value = []
+    pageData.total = 0
+    tableRef.value?.setLoading(false)
+    searchFormRef.value?.setLoading(false)
+  }
 }
 
 const handleAdd = () => {
@@ -207,19 +206,18 @@ const handleCopy = (item: Res) => {
 const handleDelete = (item: Res) => {
   ElMessageBox.alert(`确定删除${item.name}`, '删除', {
     confirmButtonText: 'OK',
-    callback: (action: string) => {
+    callback: async (action: string) => {
       if (action === 'confirm') {
-        http('https://5ykenqzacs.hk.aircode.run/removeItem', {
+        const success = await removeItem({
           type: 'demoList',
           id: item._id,
-        }).then(({ success }) => {
-          if (success) {
-            ElMessage.success('删除成功')
-            getList()
-          } else {
-            ElMessage.error('删除失败')
-          }
         })
+        if (success) {
+          ElMessage.success('删除成功')
+          getListData()
+        } else {
+          ElMessage.error('删除失败')
+        }
       }
     },
   })
@@ -232,19 +230,18 @@ const changeRows = (rows: Res[]) => {
 const handleBatchDelete = () => {
   ElMessageBox.alert(`确定删除${selectRows.value.length}条记录`, '删除', {
     confirmButtonText: 'OK',
-    callback: (action: string) => {
+    callback: async (action: string) => {
       if (action === 'confirm') {
-        http('https://5ykenqzacs.hk.aircode.run/removeItems', {
+        const success = await removeItems({
           type: 'demoList',
           ids: selectRows.value.map((i: Res) => i._id),
-        }).then(({ success }) => {
-          if (success) {
-            ElMessage.success('删除成功')
-            getList()
-          } else {
-            ElMessage.error('删除失败')
-          }
         })
+        if (success) {
+          ElMessage.success('删除成功')
+          getListData()
+        } else {
+          ElMessage.error('删除失败')
+        }
       }
     },
   })
@@ -252,6 +249,6 @@ const handleBatchDelete = () => {
 
 onBeforeMount(async () => {
   options.value = await getOptions()
-  getList()
+  getListData()
 })
 </script>

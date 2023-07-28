@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive, ref, computed, inject } from 'vue'
 import { useRoute } from 'vue-router'
-import { http } from '@/utils/http'
+import { getItem, addItem, editItem } from '@/utils/apis'
 import { getOptions, type Res } from '@/utils/apis'
 
 const removeTab = inject('removeTab') as Function
@@ -125,30 +125,28 @@ const submitForm = async () => {
   const { valid, data } = await ruleFormRef.value?.submitForm()
   if (valid) {
     if (id) {
-      http('https://5ykenqzacs.hk.aircode.run/editItem', {
+      const success = await editItem({
         data,
         id,
         type: 'demoList',
-      }).then(({ success }) => {
-        if (success) {
-          ElMessage.success('修改成功')
-          leavePage()
-        } else {
-          ElMessage.error('修改失败')
-        }
       })
+      if (success) {
+        ElMessage.success('修改成功')
+        leavePage()
+      } else {
+        ElMessage.error('修改失败')
+      }
     } else {
-      http('https://5ykenqzacs.hk.aircode.run/addItem', {
+      const success = await addItem({
         data,
         type: 'demoList',
-      }).then(({ success }) => {
-        if (success) {
-          ElMessage.success('提交成功')
-          leavePage()
-        } else {
-          ElMessage.error('提交失败')
-        }
       })
+      if (success) {
+        ElMessage.success('提交成功')
+        leavePage()
+      } else {
+        ElMessage.error('提交失败')
+      }
     }
   }
 }
@@ -162,19 +160,18 @@ const changeValue = (key: string, value: any) => {
   ruleFormRef.value?.changeValue(key, value)
 }
 
-const getItemById = (id: string) => {
-  http('https://5ykenqzacs.hk.aircode.run/getItem', {
+const getItemById = async (id: string) => {
+  const result = await getItem({
     type: 'demoList',
     id,
-  }).then(({ success, result }) => {
-    if (success && result) {
-      Object.keys(result).forEach((i: string) => {
-        if (!['_id', 'updatedAt', 'createdAt'].includes(i)) {
-          ruleForm[i] = result[i]
-        }
-      })
-    }
   })
+  if (result?._id) {
+    Object.keys(result).forEach((i: string) => {
+      if (!['_id', 'updatedAt', 'createdAt'].includes(i)) {
+        ruleForm[i] = result[i]
+      }
+    })
+  }
 }
 
 onBeforeMount(async () => {

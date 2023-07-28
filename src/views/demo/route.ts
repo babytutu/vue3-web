@@ -1,4 +1,4 @@
-export const route: any[] = [
+export const route = [
   {
     path: '/singleList',
     name: 'singleList',
