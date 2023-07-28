@@ -127,16 +127,30 @@ const contextmenu = (e: MouseEvent, path: string) => {
 // 关闭所有
 const closeAllTabs = () => {
   closeMenu()
-  panes.value = panes.value.filter((pane) => pane.closable === false)
+  let nextTab: Array<TabType> = []
+  panes.value.filter((pane) => {
+    if (pane.closable !== false) {
+      emit('delCache', pane.path)
+    } else {
+      nextTab.push(pane)
+    }
+  })
+  panes.value = nextTab
   activeKey.value = panes.value[0].path
 }
 
 // 关闭其他
 const closeOtherTabs = () => {
   closeMenu()
-  panes.value = panes.value.filter(
-    (pane) => clickMenu.value === pane.path || pane.closable === false
-  )
+  let nextTab: Array<TabType> = []
+  panes.value.filter((pane) => {
+    if (clickMenu.value !== pane.path && pane.closable !== false) {
+      emit('delCache', pane.path)
+    } else {
+      nextTab.push(pane)
+    }
+  })
+  panes.value = nextTab
   activeKey.value = clickMenu.value
 }
 
@@ -176,16 +190,21 @@ watch(
   margin: 0;
 }
 :global(.tabMenu .is-icon-close) {
-  width: 14px !important;
+  right: 10px !important
 }
 
 :global(.tabMenu .el-tabs__item) {
-  padding: 0 14px !important;
+  padding: 0 !important;
 }
 
 :global(.popperMenu) {
   padding 0 !important
   min-width 120px !important
+}
+
+.tabMenu_tab {
+  line-height 40px
+  padding 0 14px
 }
 .popperMenu {
   ul {
