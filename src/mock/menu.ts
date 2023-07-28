@@ -14,19 +14,14 @@ export const menuList: any = [
       },
       {
         title: '分页列表',
-        children: [
-          {
-            title: '表单',
-            path: '/addForm',
-          },
-          {
-            title: '分页列表',
-            path: '/pageList',
-          },
-        ],
+        path: '/pageList',
       },
       {
-        title: 'echart',
+        title: '表单',
+        path: '/addForm',
+      },
+      {
+        title: '图表',
         path: '/echartPage',
       },
     ],

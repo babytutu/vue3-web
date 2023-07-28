@@ -14,9 +14,9 @@
       :closable="pane.closable !== false"
     >
       <template #label>
-        <div
+        <div class="tabMenu_tab"
           @contextmenu="(e: MouseEvent) => contextmenu(e, pane.path)"
-          v-click-outside="closeMenu"
+          v-on-click-outside="closeMenu"
         >
           {{ pane.title }}
         </div>
@@ -43,6 +43,7 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { type TabPaneName } from 'element-plus'
+import { vOnClickOutside } from '@vueuse/components'
 
 // Tab
 export interface TabType {
@@ -100,21 +101,6 @@ const removeTab = (targetKey: TabPaneName) => {
 const visible = ref<boolean>(false)
 const clickMenu = ref<string>('')
 const buttonRef = ref()
-
-// 指令，点击其他元素后执行
-const vClickOutside = {
-  mounted(el: any, binding: any) {
-    el.handler = function (e: any) {
-      if (!el.contains(e.target)) {
-        binding.value(e)
-      }
-    }
-    document.addEventListener('click', el.handler, true)
-  },
-  unmounted(el: any) {
-    document.removeEventListener('click', el.handler)
-  },
-}
 
 // 打开右键菜单
 const contextmenu = (e: MouseEvent, path: string) => {

@@ -4,13 +4,18 @@
       {{ i.content }}
     </el-descriptions-item>
   </el-descriptions>
+  <el-button @click="toggle">
+    {{ isFullscreen ? '退出全屏' : '全屏' }}
+  </el-button>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useProxy from '@/utils/useProxy'
-const proxy = useProxy()
+import { useFullscreen } from '@vueuse/core'
 
+const proxy = useProxy()
+const { toggle, isFullscreen } = useFullscreen()
 const title = ref(proxy.$translate('home.title'))
 
 const apiList = [
