@@ -10,16 +10,11 @@ interface Model {
  */
 const files: Model = import.meta.glob('./*.md', { eager: true, import: 'default' })
 
-const list: string[] = []
-const modules: Model = {}
+export const moduleList: string[] = []
+export const modules: Model = {}
 
 Object.keys(files).forEach((path) => {
   const moduleName = path.replace(/^\.\/(.*)\.\w+$/, '$1')
-  list.push(moduleName)
+  moduleList.push(moduleName)
   modules[moduleName] = files[path]
 })
-
-export default {
-  modules,
-  list,
-}

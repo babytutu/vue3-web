@@ -14,9 +14,9 @@
       :closable="pane.closable !== false"
     >
       <template #label>
-        <div
+        <div class="tabMenu_tab"
           @contextmenu="(e: MouseEvent) => contextmenu(e, pane.path)"
-          v-click-outside="closeMenu"
+          v-on-click-outside="closeMenu"
         >
           {{ pane.title }}
         </div>
@@ -43,6 +43,7 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { type TabPaneName } from 'element-plus'
+import { vOnClickOutside } from '@vueuse/components'
 
 // Tab
 export interface TabType {
@@ -101,21 +102,6 @@ const visible = ref<boolean>(false)
 const clickMenu = ref<string>('')
 const buttonRef = ref()
 
-// 指令，点击其他元素后执行
-const vClickOutside = {
-  mounted(el: any, binding: any) {
-    el.handler = function (e: any) {
-      if (!el.contains(e.target)) {
-        binding.value(e)
-      }
-    }
-    document.addEventListener('click', el.handler, true)
-  },
-  unmounted(el: any) {
-    document.removeEventListener('click', el.handler)
-  },
-}
-
 // 打开右键菜单
 const contextmenu = (e: MouseEvent, path: string) => {
   e.preventDefault()
@@ -127,16 +113,30 @@ const contextmenu = (e: MouseEvent, path: string) => {
 // 关闭所有
 const closeAllTabs = () => {
   closeMenu()
-  panes.value = panes.value.filter((pane) => pane.closable === false)
+  let nextTab: Array<TabType> = []
+  panes.value.filter((pane) => {
+    if (pane.closable !== false) {
+      emit('delCache', pane.path)
+    } else {
+      nextTab.push(pane)
+    }
+  })
+  panes.value = nextTab
   activeKey.value = panes.value[0].path
 }
 
 // 关闭其他
 const closeOtherTabs = () => {
   closeMenu()
-  panes.value = panes.value.filter(
-    (pane) => clickMenu.value === pane.path || pane.closable === false
-  )
+  let nextTab: Array<TabType> = []
+  panes.value.filter((pane) => {
+    if (clickMenu.value !== pane.path && pane.closable !== false) {
+      emit('delCache', pane.path)
+    } else {
+      nextTab.push(pane)
+    }
+  })
+  panes.value = nextTab
   activeKey.value = clickMenu.value
 }
 
@@ -176,16 +176,21 @@ watch(
   margin: 0;
 }
 :global(.tabMenu .is-icon-close) {
-  width: 14px !important;
+  right: 10px !important
 }
 
 :global(.tabMenu .el-tabs__item) {
-  padding: 0 14px !important;
+  padding: 0 !important;
 }
 
 :global(.popperMenu) {
   padding 0 !important
   min-width 120px !important
+}
+
+.tabMenu_tab {
+  line-height 40px
+  padding 0 14px
 }
 .popperMenu {
   ul {

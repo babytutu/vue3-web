@@ -3,7 +3,7 @@
     <el-card class="box-card" :header="$translate('home.title')">
       <el-form label-width="80px" :model="loginInfo">
         <el-form-item label="帐号">
-          <el-input v-model="loginInfo.username" maxLength="10" />
+          <el-input ref="input" v-model="loginInfo.username" maxLength="10" />
         </el-form-item>
         <el-form-item label="密码">
           <el-input v-model="loginInfo.password" maxLength="12" type="password" />
@@ -31,6 +31,8 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+const input = ref()
+
 const loginInfo = ref({
   username: '',
   password: '',
@@ -56,6 +58,7 @@ const onSubmit = () => {
 onMounted(() => {
   log('version', version)
   log('buildTime', buildTime)
+  input.value?.input.focus()
 })
 </script>
 <style lang="stylus" scoped>
