@@ -70,7 +70,7 @@ defineProps({
 通过设置 options 实现操作列快捷配置
 
 ```js
-;[
+[
   {
     prop: 'action',
     label: '操作',
@@ -78,19 +78,23 @@ defineProps({
     options: [
       {
         name: '查看',
-        onClick: (row: any) => handleDetail(row),
+        onClick: (row: Res) => handleDetail(row),
+        auth: checkAuth('pageList', 'view')
       },
       {
         name: '编辑',
-        onClick: (row: any) => handleEdit(row),
+        onClick: (row: Res) => handleEdit(row),
+        auth: checkAuth('pageList', 'edit')
       },
       {
         name: '复制',
-        onClick: (row: any) => handleCopy(row),
+        onClick: (row: Res) => handleCopy(row),
+        auth: checkAuth('pageList', 'copy')
       },
       {
         name: '删除',
-        onClick: (row: any) => handleDelete(row),
+        onClick: (row: Res) => handleDelete(row),
+        auth: checkAuth('pageList', 'del')
       },
     ],
   },
