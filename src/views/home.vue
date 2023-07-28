@@ -15,8 +15,9 @@ import useProxy from '@/utils/useProxy'
 import { useFullscreen } from '@vueuse/core'
 
 const proxy = useProxy()
-const { toggle, isFullscreen } = useFullscreen()
 const title = ref(proxy.$translate('home.title'))
+
+const { toggle, isFullscreen } = useFullscreen()
 
 const apiList = [
   {

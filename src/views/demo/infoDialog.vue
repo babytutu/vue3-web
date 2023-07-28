@@ -13,7 +13,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
-import { http } from '@/utils/http'
+import { addOption } from '@/utils/apis'
 
 const props = defineProps(['modelValue', 'typeOptions'])
 
@@ -55,21 +55,15 @@ const submit = async () => {
   const { valid, data } = await ruleFormRef.value?.submitForm()
   if (valid) {
     ruleFormRef.value?.setLoading(true)
-    http(`https://5ykenqzacs.hk.aircode.run/addOption`, data)
-      .then(({ success, result }) => {
-        if (success) {
-          ElMessage.success('添加成功')
-          close()
-          emit('submit')
-        } else {
-          ElMessage.error(result || '添加失败')
-          ruleFormRef.value?.setLoading(false)
-        }
-      })
-      .catch(() => {
-        ElMessage.error('添加失败')
-        ruleFormRef.value?.setLoading(false)
-      })
+    const result = await addOption(data)
+    if (result?._id) {
+      ElMessage.success('添加成功')
+      close()
+      emit('submit')
+    } else {
+      ElMessage.error(result || '添加失败')
+      ruleFormRef.value?.setLoading(false)
+    }
   }
 }
 

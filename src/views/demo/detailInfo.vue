@@ -35,7 +35,10 @@ const addTabByPath = () => {
 }
 
 onMounted(async () => {
-  const result = await getItem(route.params.id as string)
+  const result = await getItem({
+    type: 'demoList',
+    id: route.params.id,
+  })
   info.value = result
   loading.value = false
 })

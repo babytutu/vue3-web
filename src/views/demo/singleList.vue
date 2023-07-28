@@ -24,13 +24,13 @@
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted } from 'vue'
-import { http } from '@/utils/http'
+import { getAllList, removeItem, type Res } from '@/utils/apis'
 import infoDialog from './infoDialog.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const { checkAuth } = useAuthStore()
 
-const tableData = ref<Array<any>>([])
+const tableData = ref<Array<Res>>([])
 const tableRef = ref()
 
 const header = [
@@ -58,7 +58,7 @@ const header = [
     options: [
       {
         name: '删除',
-        onClick: (row: any) => handleDelete(row),
+        onClick: (row: Res) => handleDelete(row),
         auth: checkAuth('singleList', 'del')
       },
     ],
@@ -105,22 +105,21 @@ const searchItem = reactive([
   },
 ])
 
-const handleDelete = (item: any) => {
+const handleDelete = (item: Res) => {
   ElMessageBox.alert(`确定删除${item.label}`, '删除', {
     confirmButtonText: 'OK',
-    callback: (action: string) => {
+    callback: async (action: string) => {
       if (action === 'confirm') {
-        http('https://5ykenqzacs.hk.aircode.run/removeItem', {
+        const success = await removeItem({
           type: 'options',
           id: item._id,
-        }).then(({ success }) => {
-          if (success) {
-            ElMessage.success('删除成功')
-            getList()
-          } else {
-            ElMessage.error('删除失败')
-          }
         })
+        if (success) {
+          ElMessage.success('删除成功')
+          getList()
+        } else {
+          ElMessage.error('删除失败')
+        }
       }
     },
   })
@@ -131,19 +130,18 @@ const getList = async () => {
   tableData.value = []
   tableRef.value?.setLoading(true)
   searchFormRef.value?.setLoading(true)
-  http(`https://5ykenqzacs.hk.aircode.run/getAllList`, {
+  const result = await getAllList({
     type: 'options',
     search: data,
   })
-    .then((res: any) => {
-      tableData.value = res.result
-      tableRef.value?.setLoading(false)
-      searchFormRef.value?.setLoading(false)
-    })
-    .catch(() => {
-      tableRef.value?.setLoading(false)
-      searchFormRef.value?.setLoading(false)
-    })
+  if (result.length) {
+    tableData.value = result
+    tableRef.value?.setLoading(false)
+    searchFormRef.value?.setLoading(false)
+  } else {
+    tableRef.value?.setLoading(false)
+    searchFormRef.value?.setLoading(false)
+  }
 }
 
 onMounted(() => {
